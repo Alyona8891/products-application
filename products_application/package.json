@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "lint-fix": "eslint . --ext ts,tsx --fix",
-    "prepare": "cd .. && husky install products_application/.husky"
+    "prepare": "cd .. && husky install products_application/.husky",
+    "format:fix": "prettier --write \"src/**/*.{js,ts,tsx}\""
   },
   "dependencies": {
     "react": "^18.2.0",
