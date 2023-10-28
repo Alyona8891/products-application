@@ -8,7 +8,7 @@ export class Card extends Component<{ card: ICard }, Record<string, never>> {
       <div className={styles.card}>
         <img
           className={styles.image}
-          src={this.props.card.image}
+          src={this.props.card.images[0]}
           alt="card image"
         />
         <h3 className={styles.title}>{this.props.card.title}</h3>

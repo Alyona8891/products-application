@@ -9,11 +9,11 @@ export class App extends Component {
   };
 
   componentDidMount(): void {
-    fetch('https://fakestoreapi.com/products')
+    fetch('https://dummyjson.com/products')
       .then((res) => res.json())
       .then((json) =>
         this.setState({
-          cards: json,
+          cards: json.products,
         })
       );
   }
@@ -27,7 +27,13 @@ export class App extends Component {
   };
 
   handleSearchButton = () => {
-    alert(this.state.inputValue);
+    fetch(`https://dummyjson.com/products/search?q=${this.state.inputValue}`)
+      .then((res) => res.json())
+      .then((json) =>
+        this.setState({
+          cards: json.products,
+        })
+      );
   };
 
   render() {
