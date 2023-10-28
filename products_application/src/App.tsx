@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import styles from './App.module.scss';
-import { Card } from './components/Cards/Card/Card';
+import { Cards } from './components/Cards/Cards';
 
 export class App extends Component {
   state = {
     inputValue: '',
+    cards: [
+      { id: '1', title: 'apple', text: 'kjfirjifrifirjfrijfirjfirjf' },
+      { id: '2', title: 'orange', text: 'kjfirjifrifirjfrijfirjfirjf' },
+    ],
   };
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +36,9 @@ export class App extends Component {
           </div>
         </header>
         <main className={styles.main}>
-          <Card />
-          <Card />
-          <Card />
+          <div className={styles.container}>
+            <Cards cards={this.state.cards} />
+          </div>
         </main>
       </>
     );
