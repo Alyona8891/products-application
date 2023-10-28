@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './App.module.scss';
+import { Card } from './components/Cards/Card/Card';
 
 export class App extends Component {
   state = {
@@ -30,6 +31,11 @@ export class App extends Component {
             <button onClick={this.handleSearchButton}>Search</button>
           </div>
         </header>
+        <main className={styles.main}>
+          <Card />
+          <Card />
+          <Card />
+        </main>
       </>
     );
   }
