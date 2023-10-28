@@ -5,11 +5,18 @@ import { Cards } from './components/Cards/Cards';
 export class App extends Component {
   state = {
     inputValue: '',
-    cards: [
-      { id: '1', title: 'apple', text: 'kjfirjifrifirjfrijfirjfirjf' },
-      { id: '2', title: 'orange', text: 'kjfirjifrifirjfrijfirjfirjf' },
-    ],
+    cards: [],
   };
+
+  componentDidMount(): void {
+    fetch('https://fakestoreapi.com/products')
+      .then((res) => res.json())
+      .then((json) =>
+        this.setState({
+          cards: json,
+        })
+      );
+  }
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) {
