@@ -1,9 +1,10 @@
 import { Component } from 'react';
+import styles from './ErrorButton.module.scss';
 
 export class ErrorButton extends Component<object, { error: boolean }, string> {
   state = { error: false };
 
-  handleClick = () => {
+  handleErrorButton = () => {
     this.setState({
       error: true,
     });
@@ -13,6 +14,10 @@ export class ErrorButton extends Component<object, { error: boolean }, string> {
     if (this.state.error) {
       throw new Error('Crashing the app!');
     }
-    return <button onClick={this.handleClick}>Throw Error</button>;
+    return (
+      <button className={styles.error_button} onClick={this.handleErrorButton}>
+        Throw Error
+      </button>
+    );
   }
 }

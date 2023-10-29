@@ -100,11 +100,16 @@ export class App extends Component<object, IAppState, string> {
                 Enter keyword to search
               </label>
               <input
+                className={styles.input}
                 id="search_input"
                 value={this.state.inputValue}
                 onChange={this.handleInputChange}
               />
-              <button onClick={this.handleSearchButton} type="submit">
+              <button
+                className={styles.search_button}
+                onClick={this.handleSearchButton}
+                type="submit"
+              >
                 Search
               </button>
             </form>

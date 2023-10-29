@@ -2,10 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #83d2f1;
+    color: #242424;
 }
 
 button {
     font-family: inherit;
+    cursor: pointer;
 }
 
 @font-face {
@@ -35,21 +38,53 @@ body {
 
 .search_section, .cards_section {
     display: flex;
-    justify-content: center;
-    max-width: 70%;
-    margin: 10px auto 0px;
+    
+    margin: 10px auto;
     flex-wrap: wrap;
+}
+
+.search_section{
+    max-width: 70%;
+    justify-content: space-between;
+}
+
+.cards_section {
+    max-width: 70%;
+    position: relative;
+    justify-content: space-between;
 }
 
 .form {
     position: relative;
+    display: flex;
+    align-items: center;
 }   
 
 .label {
     position: absolute;
-    top: -10px;
+    top: -8px;
     left: 10px;
-    background-color: beige;
+    background-color: #83d2f1;
+    font-size: 12px;
+}
+
+.input {
+    padding-left: 5px;
+    font-family: inherit;
+    height: 27px;
+    font-size: 18px;
+    flex: 1 0 auto;
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #242424;
+    margin-right: 10px;
+}
+
+.search_button {
+    background-color: #ffffff;
+    border: 1px solid #242424;
+    padding: 5px 5px;
+    border-radius: 5px;
 }
 
 .message {
@@ -61,4 +96,6 @@ body {
     font-weight: bold;
     font-size: 30px;
     font-family: monospace;
+    width: 100%;
+    margin: 0 auto;
 }
