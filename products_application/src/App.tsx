@@ -3,7 +3,7 @@ import styles from './App.module.scss';
 import { Cards } from './components/Cards/Cards';
 import { Loader } from './components/Loader/Loader';
 import { ErrorButton } from './components/ErrorButton/ErrorButton';
-import { IAppState } from './types';
+import { IAppState, IRequestResult } from './types';
 
 export class App extends Component<object, IAppState, string> {
   state = {
@@ -32,7 +32,7 @@ export class App extends Component<object, IAppState, string> {
       fetch(`https://dummyjson.com/products/search?q=${keyWord}`)
         .then((res) => res.json())
         .then(
-          (json) => {
+          (json: IRequestResult) => {
             if (json.products.length === 0) {
               this.setState({
                 isLoading: false,
@@ -62,7 +62,7 @@ export class App extends Component<object, IAppState, string> {
       fetch('https://dummyjson.com/products')
         .then((res) => res.json())
         .then(
-          (json) => {
+          (json: IRequestResult) => {
             if (json.products.length === 0) {
               this.setState({
                 isLoading: false,
@@ -100,11 +100,11 @@ export class App extends Component<object, IAppState, string> {
     this.setLocalStorageData();
     fetch(`https://dummyjson.com/products/search?q=${this.state.inputValue}`)
       .then((res) => res.json())
-      .then((json) =>
+      .then((json: IRequestResult) => {
         this.setState({
           cards: json.products,
-        })
-      );
+        });
+      });
   };
 
   setLocalStorageData = () => {

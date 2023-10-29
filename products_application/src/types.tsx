@@ -1,3 +1,9 @@
+export interface IRequestResult {
+  limit: number;
+  total: number;
+  products: ICard[];
+}
+
 export interface IAppState {
   inputValue: string;
   cards: never[] | ICard[];
