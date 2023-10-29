@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import styles from './App.module.scss';
 import { Cards } from './components/Cards/Cards';
 import { Loader } from './components/Loader/Loader';
+import { ErrorButton } from './components/ErrorButton/ErrorButton';
+import { IAppState } from './types';
 
-export class App extends Component {
+export class App extends Component<object, IAppState, string> {
   state = {
     inputValue: this.setInputValue(),
     cards: [],
@@ -82,12 +84,17 @@ export class App extends Component {
     localStorage.setItem('alyona8891_keyword', this.state.inputValue);
   };
 
+  handleErrorButton = () => {
+    throw new Error('Crashing the app!!');
+  };
+
   render() {
     return (
       <>
         <header className={styles.header}></header>
         <main className={styles.main}>
           <section className={styles.search_section}>
+            <ErrorButton />
             <form className={styles.form}>
               <label className={styles.label} htmlFor="search_input">
                 Enter keyword to search
