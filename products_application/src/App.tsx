@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import styles from './App.module.scss';
 import { Cards } from './components/Cards/Cards';
+import { Loader } from './components/Loader/Loader';
 
 export class App extends Component {
   state = {
     inputValue: this.setInputValue(),
     cards: [],
+    isLoading: true,
   };
 
   setInputValue() {
@@ -24,6 +26,7 @@ export class App extends Component {
         .then((res) => res.json())
         .then((json) =>
           this.setState({
+            isLoading: false,
             cards: json.products,
           })
         );
@@ -32,6 +35,7 @@ export class App extends Component {
         .then((res) => res.json())
         .then((json) =>
           this.setState({
+            isLoading: false,
             cards: json.products,
           })
         );
@@ -82,7 +86,11 @@ export class App extends Component {
             </form>
           </section>
           <section className={styles.cards_section}>
-            <Cards cards={this.state.cards} />
+            {this.state.isLoading ? (
+              <Loader />
+            ) : (
+              <Cards cards={this.state.cards} />
+            )}
           </section>
         </main>
         <footer className={styles.footer}></footer>

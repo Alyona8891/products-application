@@ -1,3 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+button {
+    font-family: inherit;
+}
+
+@font-face {
+    font-family: 'Rubik';
+    src:
+      url('./assets/fonts/Rubik-Regular.woff2') format('woff2'),
+      url('./assets/fonts/Rubik-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+  
+@font-face {
+    font-family: 'Rubik';
+    src:
+      url('./assets/fonts/Rubik-ExtraBold.woff2') format('woff2'),
+      url('./assets/fonts/Rubik-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Rubik';
+    font-weight: normal;
+}
+
 .search_section, .cards_section {
     display: flex;
     justify-content: center;
