@@ -4,18 +4,38 @@ import { Cards } from './components/Cards/Cards';
 
 export class App extends Component {
   state = {
-    inputValue: '',
+    inputValue: this.setInputValue(),
     cards: [],
   };
 
+  setInputValue() {
+    const keyWord = localStorage.getItem('alyona8891_keyword');
+    if (keyWord) {
+      return keyWord;
+    } else {
+      return '';
+    }
+  }
+
   componentDidMount(): void {
-    fetch('https://dummyjson.com/products')
-      .then((res) => res.json())
-      .then((json) =>
-        this.setState({
-          cards: json.products,
-        })
-      );
+    const keyWord = localStorage.getItem('alyona8891_keyword');
+    if (keyWord) {
+      fetch(`https://dummyjson.com/products/search?q=${keyWord}`)
+        .then((res) => res.json())
+        .then((json) =>
+          this.setState({
+            cards: json.products,
+          })
+        );
+    } else {
+      fetch('https://dummyjson.com/products')
+        .then((res) => res.json())
+        .then((json) =>
+          this.setState({
+            cards: json.products,
+          })
+        );
+    }
   }
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +47,7 @@ export class App extends Component {
   };
 
   handleSearchButton = () => {
+    this.setLocalStorageData();
     fetch(`https://dummyjson.com/products/search?q=${this.state.inputValue}`)
       .then((res) => res.json())
       .then((json) =>
@@ -34,6 +55,10 @@ export class App extends Component {
           cards: json.products,
         })
       );
+  };
+
+  setLocalStorageData = () => {
+    localStorage.setItem('alyona8891_keyword', this.state.inputValue);
   };
 
   render() {
