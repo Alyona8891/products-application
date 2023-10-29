@@ -11,6 +11,7 @@ export class App extends Component<object, IAppState, string> {
     cards: [],
     isLoading: true,
     isNothingFound: false,
+    isButtonDisabled: false,
   };
 
   setInputValue() {
@@ -25,39 +26,65 @@ export class App extends Component<object, IAppState, string> {
   componentDidMount(): void {
     const keyWord = localStorage.getItem('alyona8891_keyword');
     if (keyWord) {
+      this.setState({
+        isButtonDisabled: true,
+      });
       fetch(`https://dummyjson.com/products/search?q=${keyWord}`)
         .then((res) => res.json())
-        .then((json) => {
-          if (json.products.length === 0) {
+        .then(
+          (json) => {
+            if (json.products.length === 0) {
+              this.setState({
+                isLoading: false,
+                cards: json.products,
+                isNothingFound: true,
+                isButtonDisabled: false,
+              });
+            } else {
+              this.setState({
+                isLoading: false,
+                cards: json.products,
+                isButtonDisabled: false,
+              });
+            }
+          },
+          (error: Error) => {
             this.setState({
-              isLoading: false,
-              cards: json.products,
-              isNothingFound: true,
+              isButtonDisabled: true,
             });
-          } else {
-            this.setState({
-              isLoading: false,
-              cards: json.products,
-            });
+            console.log(error);
           }
-        });
+        );
     } else {
+      this.setState({
+        isButtonDisabled: true,
+      });
       fetch('https://dummyjson.com/products')
         .then((res) => res.json())
-        .then((json) => {
-          if (json.products.length === 0) {
+        .then(
+          (json) => {
+            if (json.products.length === 0) {
+              this.setState({
+                isLoading: false,
+                cards: json.products,
+                isNothingFound: true,
+                isButtonDisabled: false,
+              });
+            } else {
+              this.setState({
+                isLoading: false,
+                cards: json.products,
+                isButtonDisabled: false,
+              });
+            }
+          },
+          (error: Error) => {
             this.setState({
-              isLoading: false,
-              cards: json.products,
-              isNothingFound: true,
+              isButtonDisabled: true,
             });
-          } else {
-            this.setState({
-              isLoading: false,
-              cards: json.products,
-            });
+            console.log(error);
           }
-        });
+        );
     }
   }
 
@@ -108,6 +135,7 @@ export class App extends Component<object, IAppState, string> {
               <button
                 className={styles.search_button}
                 onClick={this.handleSearchButton}
+                disabled={this.state.isButtonDisabled}
                 type="submit"
               >
                 Search

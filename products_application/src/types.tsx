@@ -3,6 +3,7 @@ export interface IAppState {
   cards: never[] | ICard[];
   isLoading: boolean;
   isNothingFound: boolean;
+  isButtonDisabled: boolean;
 }
 
 export interface ICard {
