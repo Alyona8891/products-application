@@ -64,20 +64,28 @@ export class App extends Component {
   render() {
     return (
       <>
-        <header className={styles.header}>
-          <div className={styles.container}>
-            <input
-              value={this.state.inputValue}
-              onChange={this.handleInputChange}
-            />
-            <button onClick={this.handleSearchButton}>Search</button>
-          </div>
-        </header>
+        <header className={styles.header}></header>
         <main className={styles.main}>
-          <div className={styles.container}>
+          <section className={styles.search_section}>
+            <form className={styles.form}>
+              <label className={styles.label} htmlFor="search_input">
+                Enter keyword to search
+              </label>
+              <input
+                id="search_input"
+                value={this.state.inputValue}
+                onChange={this.handleInputChange}
+              />
+              <button onClick={this.handleSearchButton} type="submit">
+                Search
+              </button>
+            </form>
+          </section>
+          <section className={styles.cards_section}>
             <Cards cards={this.state.cards} />
-          </div>
+          </section>
         </main>
+        <footer className={styles.footer}></footer>
       </>
     );
   }

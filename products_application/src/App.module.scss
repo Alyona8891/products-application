@@ -1,7 +1,18 @@
-.container {
+.search_section, .cards_section {
     display: flex;
     justify-content: center;
     max-width: 70%;
     margin: 10px auto 0px;
     flex-wrap: wrap;
+}
+
+.form {
+    position: relative;
+}   
+
+.label {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: beige;
 }
