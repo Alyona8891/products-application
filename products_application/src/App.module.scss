@@ -51,3 +51,14 @@ body {
     left: 10px;
     background-color: beige;
 }
+
+.message {
+    position: absolute;
+    top: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: monospace;
+}

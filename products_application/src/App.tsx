@@ -8,6 +8,7 @@ export class App extends Component {
     inputValue: this.setInputValue(),
     cards: [],
     isLoading: true,
+    isNothingFound: false,
   };
 
   setInputValue() {
@@ -24,21 +25,37 @@ export class App extends Component {
     if (keyWord) {
       fetch(`https://dummyjson.com/products/search?q=${keyWord}`)
         .then((res) => res.json())
-        .then((json) =>
-          this.setState({
-            isLoading: false,
-            cards: json.products,
-          })
-        );
+        .then((json) => {
+          if (json.products.length === 0) {
+            this.setState({
+              isLoading: false,
+              cards: json.products,
+              isNothingFound: true,
+            });
+          } else {
+            this.setState({
+              isLoading: false,
+              cards: json.products,
+            });
+          }
+        });
     } else {
       fetch('https://dummyjson.com/products')
         .then((res) => res.json())
-        .then((json) =>
-          this.setState({
-            isLoading: false,
-            cards: json.products,
-          })
-        );
+        .then((json) => {
+          if (json.products.length === 0) {
+            this.setState({
+              isLoading: false,
+              cards: json.products,
+              isNothingFound: true,
+            });
+          } else {
+            this.setState({
+              isLoading: false,
+              cards: json.products,
+            });
+          }
+        });
     }
   }
 
@@ -90,6 +107,11 @@ export class App extends Component {
               <Loader />
             ) : (
               <Cards cards={this.state.cards} />
+            )}
+            {this.state.isNothingFound && (
+              <p className={styles.message}>
+                Sorry, nothing found. Please, try again!
+              </p>
             )}
           </section>
         </main>
