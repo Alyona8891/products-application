@@ -1,5 +1,5 @@
 import styles from './Card.module.scss';
-import { IProduct } from '../../../../../../types';
+import { IProduct } from '../../../../../types';
 
 export function Card(props: { product: IProduct }): React.ReactElement {
   const { product } = props;

@@ -1,0 +1,21 @@
+.cards_section {
+    max-width: 70%;
+    position: relative;
+    justify-content: space-between;
+    display: flex;
+    margin: 10px auto;
+    flex-wrap: wrap;
+}
+
+.message {
+    position: absolute;
+    top: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: monospace;
+    width: 100%;
+    margin: 0 auto;
+}
