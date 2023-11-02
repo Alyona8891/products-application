@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import styles from './App.module.scss';
-import { Cards } from './components/Cards/Cards';
-import { Loader } from './components/Loader/Loader';
 import { ErrorButton } from './components/ErrorButton/ErrorButton';
-import { IAppState, IRequestResult } from './types';
+import { IRequestResult } from './types';
 
-export class App extends Component<object, IAppState, string> {
+export class App extends Component {
   state = {
     inputValue: this.setInputValue(),
     cards: [],
@@ -143,11 +141,6 @@ export class App extends Component<object, IAppState, string> {
             </form>
           </section>
           <section className={styles.cards_section}>
-            {this.state.isLoading ? (
-              <Loader />
-            ) : (
-              <Cards cards={this.state.cards} />
-            )}
             {this.state.isNothingFound && (
               <p className={styles.message}>
                 Sorry, nothing found. Please, try again!

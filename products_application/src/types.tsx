@@ -1,18 +1,10 @@
 export interface IRequestResult {
   limit: number;
   total: number;
-  products: ICard[];
+  products: IProduct[];
 }
 
-export interface IAppState {
-  inputValue: string;
-  cards: never[] | ICard[];
-  isLoading: boolean;
-  isNothingFound: boolean;
-  isButtonDisabled: boolean;
-}
-
-export interface ICard {
+export interface IProduct {
   id: number;
   title: string;
   text: string;
