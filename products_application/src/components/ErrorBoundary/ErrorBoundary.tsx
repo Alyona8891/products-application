@@ -1,5 +1,5 @@
-import React, { Component, ErrorInfo } from 'react';
-import { IErrorBoundaryProps, IErrorBoundaryState } from '../../types';
+import { Component, ErrorInfo } from 'react';
+import { IErrorBoundaryProps, IErrorBoundaryState } from '../../types/types';
 import styles from './ErrorBoundary.module.scss';
 
 export class ErrorBoundary extends Component<

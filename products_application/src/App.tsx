@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './App.module.scss';
 import { ErrorButton } from './components/ErrorButton/ErrorButton';
-import { IRequestResult } from './types';
+import { IRequestResult } from './types/types';
 
 export class App extends Component {
   state = {

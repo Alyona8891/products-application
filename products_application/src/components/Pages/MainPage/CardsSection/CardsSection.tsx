@@ -1,4 +1,4 @@
-import { IProduct } from '../../../../types';
+import { IProduct } from '../../../../types/types';
 import { Card } from './Card/Card';
 import styles from './CardsSection.module.scss';
 
