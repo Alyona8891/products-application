@@ -1,12 +1,25 @@
+import { useState } from 'react';
+import { Loader } from '../../Loader/Loader';
 import styles from './MainPage.module.scss';
+import { SearchSection } from './SearchSection/SearchSection';
 
 export function MainPage(): React.ReactElement {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmitButton = (): void => {
+    setIsLoading(true);
+  };
+
   return (
     <>
-      <header className={styles.header}>Header</header>
+      <header className={styles.header} />
       <main className={styles.main}>
-        <section className={styles.search_section}>Search section</section>
-        <section className={styles.cards_section}>Cards section</section>
+        <SearchSection onSubmit={handleSubmitButton} />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <section className={styles.cards_section}>Cards section</section>
+        )}
       </main>
       <footer className={styles.footer}>Footer</footer>
     </>
