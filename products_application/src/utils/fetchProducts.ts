@@ -4,7 +4,7 @@ export async function fetchProducts(
   setIsLoading: (value: React.SetStateAction<boolean>) => void
 ): Promise<IRequestResult | null> {
   try {
-    const res = await fetch('https://dummyjson.com/products');
+    const res = await fetch('https://dummyjson.com/products?limit=0&skip=20');
     const json = await res.json();
     return json;
   } catch (error) {

@@ -20,6 +20,7 @@ export function MainPage(): React.ReactElement {
       : fetchProducts(setIsLoading)
     ).then((data) => {
       if (data) {
+        console.log(data);
         setIsLoading(false);
         setProducts(data.products);
       }

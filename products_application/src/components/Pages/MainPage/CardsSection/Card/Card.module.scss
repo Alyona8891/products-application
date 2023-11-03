@@ -24,10 +24,11 @@
 }
 
 .title {
-    font-size: calc(11px + (26 - 20) * ((100vw - 320px) / (1920 - 320)));
+    font-size: calc(10px + (26 - 20) * ((100vw - 320px) / (1920 - 320)));
     text-align: center;
     background-color: #ffffff;
     height: 40px;
+    text-transform: uppercase;
 }
 
 .text {

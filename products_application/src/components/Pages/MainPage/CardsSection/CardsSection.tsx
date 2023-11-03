@@ -10,15 +10,17 @@ export function CardsSection(props: {
   return (
     <section className={styles.cards_section}>
       <Pagination />
-      {products.length > 0 ? (
-        products.map((product: IProduct) => {
-          return <Card product={product} key={product.id} />;
-        })
-      ) : (
-        <p className={styles.message}>
-          Sorry, nothing found. Please, try again!
-        </p>
-      )}
+      <div className={styles.cards_container}>
+        {products.length > 0 ? (
+          products.map((product: IProduct) => {
+            return <Card product={product} key={product.id} />;
+          })
+        ) : (
+          <p className={styles.message}>
+            Sorry, nothing found. Please, try again!
+          </p>
+        )}
+      </div>
     </section>
   );
 }
