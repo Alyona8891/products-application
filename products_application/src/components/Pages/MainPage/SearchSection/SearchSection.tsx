@@ -3,7 +3,7 @@ import { SearchBlock } from './SearchBlock/SearchBlock';
 import styles from './SearchSection.module.scss';
 
 export function SearchSection(props: {
-  onSubmit: () => void;
+  onSubmit: (keyWord: string) => void;
 }): React.ReactElement {
   const { onSubmit } = props;
   return (

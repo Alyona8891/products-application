@@ -32,10 +32,12 @@
 
 .text {
     align-self: end;
-    height: 120px;
+    height: 150px;
     text-align: justify;
     background-color: #ffffff;
     border-bottom-right-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
     font-size: calc(10px + (26 - 20) * ((100vw - 320px) / (1920 - 320)));
+    max-width: 100%;
+    word-wrap: break-word;
 }
