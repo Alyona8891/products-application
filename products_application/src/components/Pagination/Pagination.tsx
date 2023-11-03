@@ -1,23 +1,35 @@
 import { getPagesArr } from '../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
 
-export function Pagination(): React.ReactElement {
+export function Pagination(props: {
+  currentPage: number;
+  productCount: number;
+  productsOnPage: number;
+  onClick: (currentPage: number) => void;
+}): React.ReactElement {
+  const { currentPage, productCount, productsOnPage, onClick } = props;
+
   return (
     <div className={styles.pagination}>
       <button
         type="button"
         className={styles.button}
-        onClick={(): void => console.log(1)}
+        disabled={currentPage === 1 ? true : false}
+        onClick={(): void => onClick(currentPage - 1)}
       >
         -
       </button>
-      {getPagesArr(100, 10).map((page) => {
+      {getPagesArr(productCount, productsOnPage).map((page) => {
         return (
           <button
             key={page}
             type="button"
-            className={styles.button}
-            onClick={(): void => console.log(2)}
+            className={
+              currentPage === page
+                ? `${styles.button} ${styles.button_active}`
+                : styles.button
+            }
+            onClick={(): void => onClick(page)}
           >
             {page}
           </button>
@@ -26,7 +38,12 @@ export function Pagination(): React.ReactElement {
       <button
         type="button"
         className={styles.button}
-        onClick={(): void => console.log(3)}
+        disabled={
+          currentPage === getPagesArr(productCount, productsOnPage).length
+            ? true
+            : false
+        }
+        onClick={(): void => onClick(currentPage + 1)}
       >
         +
       </button>

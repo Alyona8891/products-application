@@ -5,11 +5,21 @@ import styles from './CardsSection.module.scss';
 
 export function CardsSection(props: {
   products: IProduct[];
+  productCount: number;
+  productsOnPage: number;
+  currentPage: number;
+  onClick: (currentPage: number) => void;
 }): React.ReactElement {
-  const { products } = props;
+  const { products, productCount, productsOnPage, currentPage, onClick } =
+    props;
   return (
     <section className={styles.cards_section}>
-      <Pagination />
+      <Pagination
+        currentPage={currentPage}
+        productCount={productCount}
+        productsOnPage={productsOnPage}
+        onClick={onClick}
+      />
       <div className={styles.cards_container}>
         {products.length > 0 ? (
           products.map((product: IProduct) => {
