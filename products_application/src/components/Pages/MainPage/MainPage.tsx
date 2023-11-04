@@ -7,9 +7,11 @@ import { fetchProducts } from '../../../utils/fetchProducts';
 import { IProduct } from '../../../types/types';
 import { searchProducts } from '../../../utils/searchProducts';
 import { getKeyWord } from '../../../utils/getKeyWord';
+import { PagintionSection } from './PaginationSection/PaginationSection';
 
 export function MainPage(): React.ReactElement {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingPagination, setIsLoadingPagination] = useState(true);
   const [products, setProducts] = useState<{
     productsArr: IProduct[];
     totalCount: number;
@@ -19,32 +21,40 @@ export function MainPage(): React.ReactElement {
   useEffect(() => {
     const keyWord = getKeyWord();
     (keyWord
-      ? searchProducts(keyWord, setIsLoading)
-      : fetchProducts(setIsLoading, 1, 10)
+      ? searchProducts(keyWord, setIsLoadingProducts, setIsLoadingPagination)
+      : fetchProducts(setIsLoadingProducts, setIsLoadingPagination, 1, 10)
     ).then((data) => {
       if (data) {
-        setIsLoading(false);
+        setIsLoadingPagination(false);
+        setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
   }, []);
 
   const handleSearchButton = (keyWord: string): void => {
-    setIsLoading(true);
-    searchProducts(keyWord, setIsLoading).then((data) => {
-      if (data) {
-        setIsLoading(false);
-        setProducts({ productsArr: data.products, totalCount: data.total });
+    setIsLoadingProducts(true);
+    searchProducts(keyWord, setIsLoadingProducts, setIsLoadingPagination).then(
+      (data) => {
+        if (data) {
+          setIsLoadingProducts(false);
+          setProducts({ productsArr: data.products, totalCount: data.total });
+        }
       }
-    });
+    );
   };
 
   const handlePaginationButton = (currentPage: number): void => {
-    setIsLoading(true);
+    setIsLoadingProducts(true);
     setCurrentPage(currentPage);
-    fetchProducts(setIsLoading, currentPage, 10).then((data) => {
+    fetchProducts(
+      setIsLoadingProducts,
+      setIsLoadingPagination,
+      currentPage,
+      10
+    ).then((data) => {
       if (data) {
-        setIsLoading(false);
+        setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
@@ -55,16 +65,18 @@ export function MainPage(): React.ReactElement {
       <header className={styles.header} />
       <main className={styles.main}>
         <SearchSection onSubmit={handleSearchButton} />
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <CardsSection
-            products={products.productsArr}
+        {!isLoadingPagination && (
+          <PagintionSection
             currentPage={currentPage}
             productCount={products.totalCount}
             productsOnPage={10}
             onClick={handlePaginationButton}
           />
+        )}
+        {isLoadingProducts ? (
+          <Loader />
+        ) : (
+          <CardsSection products={products.productsArr} />
         )}
       </main>
       <footer className={styles.footer}>Footer</footer>

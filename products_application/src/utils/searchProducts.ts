@@ -2,7 +2,8 @@ import { IRequestResult } from '../types/types';
 
 export async function searchProducts(
   keyword: string,
-  setIsLoading: (value: React.SetStateAction<boolean>) => void
+  setIsLoading: (value: React.SetStateAction<boolean>) => void,
+  setIsLoadingPagination: (value: React.SetStateAction<boolean>) => void
 ): Promise<IRequestResult | null> {
   try {
     const res = await fetch(
@@ -12,6 +13,7 @@ export async function searchProducts(
     return json;
   } catch (error) {
     setIsLoading(false);
+    setIsLoadingPagination(false);
     console.log(error);
   }
   return null;
