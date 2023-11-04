@@ -1,4 +1,4 @@
-import { getPagesArr } from '../../utils/getPagesArr';
+import { getPagesArr } from '../../../../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
 
 export function Pagination(props: {

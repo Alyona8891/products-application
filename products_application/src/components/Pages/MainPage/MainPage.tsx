@@ -8,6 +8,10 @@ import { IProduct } from '../../../types/types';
 import { searchProducts } from '../../../utils/searchProducts';
 import { getKeyWord } from '../../../utils/getKeyWord';
 import { PagintionSection } from './PaginationSection/PaginationSection';
+import {
+  DEFAULT_CURRENT_PAGE,
+  DEFAULT_ITEMS_QUANTITY,
+} from '../../../constants/constants';
 
 export function MainPage(): React.ReactElement {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
@@ -17,6 +21,7 @@ export function MainPage(): React.ReactElement {
     totalCount: number;
   }>({ productsArr: [], totalCount: 0 });
   const [currentPage, setCurrentPage] = useState(1);
+  const [quantityProductsOnPage, setProductsOnPage] = useState(10);
 
   useEffect(() => {
     const keyWord = getKeyWord();
@@ -25,10 +30,15 @@ export function MainPage(): React.ReactElement {
           keyWord,
           setIsLoadingProducts,
           setIsLoadingPagination,
-          1,
-          10
+          DEFAULT_CURRENT_PAGE,
+          DEFAULT_ITEMS_QUANTITY
         )
-      : fetchProducts(setIsLoadingProducts, setIsLoadingPagination, 1, 10)
+      : fetchProducts(
+          setIsLoadingProducts,
+          setIsLoadingPagination,
+          DEFAULT_CURRENT_PAGE,
+          DEFAULT_ITEMS_QUANTITY
+        )
     ).then((data) => {
       if (data) {
         setIsLoadingPagination(false);
@@ -45,9 +55,37 @@ export function MainPage(): React.ReactElement {
       setIsLoadingProducts,
       setIsLoadingPagination,
       1,
-      10
+      quantityProductsOnPage
     ).then((data) => {
       if (data) {
+        setIsLoadingProducts(false);
+        setProducts({ productsArr: data.products, totalCount: data.total });
+      }
+    });
+  };
+
+  const handleItemsQuantityInput = (quantity: number): void => {
+    setIsLoadingProducts(true);
+    setProductsOnPage(quantity);
+    setCurrentPage(DEFAULT_CURRENT_PAGE);
+    const keyWord = getKeyWord();
+    (keyWord
+      ? searchProducts(
+          keyWord,
+          setIsLoadingProducts,
+          setIsLoadingPagination,
+          DEFAULT_CURRENT_PAGE,
+          quantity
+        )
+      : fetchProducts(
+          setIsLoadingProducts,
+          setIsLoadingPagination,
+          DEFAULT_CURRENT_PAGE,
+          quantity
+        )
+    ).then((data) => {
+      if (data) {
+        setIsLoadingPagination(false);
         setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
@@ -64,13 +102,13 @@ export function MainPage(): React.ReactElement {
           setIsLoadingProducts,
           setIsLoadingPagination,
           currentPage,
-          10
+          quantityProductsOnPage
         )
       : fetchProducts(
           setIsLoadingProducts,
           setIsLoadingPagination,
           currentPage,
-          10
+          quantityProductsOnPage
         )
     ).then((data) => {
       if (data) {
@@ -89,8 +127,9 @@ export function MainPage(): React.ReactElement {
           <PagintionSection
             currentPage={currentPage}
             productCount={products.totalCount}
-            productsOnPage={10}
+            productsOnPage={quantityProductsOnPage}
             onClick={handlePaginationButton}
+            onInput={handleItemsQuantityInput}
           />
         )}
         {isLoadingProducts ? (

@@ -7,7 +7,7 @@ export async function fetchProducts(
   productsOnPage: number
 ): Promise<IRequestResult | null> {
   const skipCount = (currentPage - 1) * productsOnPage;
-  const limitCount = currentPage * productsOnPage;
+  const limitCount = productsOnPage;
   try {
     const res = await fetch(
       `https://dummyjson.com/products?limit=${limitCount}&skip=${skipCount}`
