@@ -12,6 +12,7 @@ import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../constants/constants';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function MainPage(): React.ReactElement {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
@@ -20,8 +21,14 @@ export function MainPage(): React.ReactElement {
     productsArr: IProduct[];
     totalCount: number;
   }>({ productsArr: [], totalCount: 0 });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [quantityProductsOnPage, setProductsOnPage] = useState(10);
+  const [quantityProductsOnPage, setProductsOnPage] = useState(
+    DEFAULT_ITEMS_QUANTITY
+  );
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParameters = new URLSearchParams(location.search);
+  const currentPage =
+    Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
 
   useEffect(() => {
     const keyWord = getKeyWord();
@@ -30,13 +37,13 @@ export function MainPage(): React.ReactElement {
           keyWord,
           setIsLoadingProducts,
           setIsLoadingPagination,
-          DEFAULT_CURRENT_PAGE,
+          currentPage,
           DEFAULT_ITEMS_QUANTITY
         )
       : fetchProducts(
           setIsLoadingProducts,
           setIsLoadingPagination,
-          DEFAULT_CURRENT_PAGE,
+          currentPage,
           DEFAULT_ITEMS_QUANTITY
         )
     ).then((data) => {
@@ -46,15 +53,16 @@ export function MainPage(): React.ReactElement {
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
-  }, []);
+  }, [currentPage]);
 
   const handleSearchButton = (keyWord: string): void => {
     setIsLoadingProducts(true);
+    handlePageChange(DEFAULT_CURRENT_PAGE);
     searchProducts(
       keyWord,
       setIsLoadingProducts,
       setIsLoadingPagination,
-      1,
+      DEFAULT_CURRENT_PAGE,
       quantityProductsOnPage
     ).then((data) => {
       if (data) {
@@ -67,7 +75,7 @@ export function MainPage(): React.ReactElement {
   const handleItemsQuantityInput = (quantity: number): void => {
     setIsLoadingProducts(true);
     setProductsOnPage(quantity);
-    setCurrentPage(DEFAULT_CURRENT_PAGE);
+    handlePageChange(DEFAULT_CURRENT_PAGE);
     const keyWord = getKeyWord();
     (keyWord
       ? searchProducts(
@@ -92,9 +100,14 @@ export function MainPage(): React.ReactElement {
     });
   };
 
+  const handlePageChange = (page: number) => {
+    queryParameters.set('page', page.toString());
+    navigate({ search: queryParameters.toString() });
+  };
+
   const handlePaginationButton = (currentPage: number): void => {
     setIsLoadingProducts(true);
-    setCurrentPage(currentPage);
+    handlePageChange(currentPage);
     const keyWord = getKeyWord();
     (keyWord
       ? searchProducts(
