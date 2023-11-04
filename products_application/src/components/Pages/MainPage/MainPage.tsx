@@ -26,7 +26,7 @@ export function MainPage(): React.ReactElement {
     ).then((data) => {
       if (data) {
         setIsLoadingPagination(false);
-        setIsLoadingProducts(false);
+        //setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
@@ -79,7 +79,7 @@ export function MainPage(): React.ReactElement {
           <CardsSection products={products.productsArr} />
         )}
       </main>
-      <footer className={styles.footer}>Footer</footer>
+      <footer className={styles.footer} />
     </>
   );
 }
