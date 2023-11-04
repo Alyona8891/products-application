@@ -21,12 +21,18 @@ export function MainPage(): React.ReactElement {
   useEffect(() => {
     const keyWord = getKeyWord();
     (keyWord
-      ? searchProducts(keyWord, setIsLoadingProducts, setIsLoadingPagination)
+      ? searchProducts(
+          keyWord,
+          setIsLoadingProducts,
+          setIsLoadingPagination,
+          1,
+          10
+        )
       : fetchProducts(setIsLoadingProducts, setIsLoadingPagination, 1, 10)
     ).then((data) => {
       if (data) {
         setIsLoadingPagination(false);
-        //setIsLoadingProducts(false);
+        setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
@@ -34,24 +40,38 @@ export function MainPage(): React.ReactElement {
 
   const handleSearchButton = (keyWord: string): void => {
     setIsLoadingProducts(true);
-    searchProducts(keyWord, setIsLoadingProducts, setIsLoadingPagination).then(
-      (data) => {
-        if (data) {
-          setIsLoadingProducts(false);
-          setProducts({ productsArr: data.products, totalCount: data.total });
-        }
+    searchProducts(
+      keyWord,
+      setIsLoadingProducts,
+      setIsLoadingPagination,
+      1,
+      10
+    ).then((data) => {
+      if (data) {
+        setIsLoadingProducts(false);
+        setProducts({ productsArr: data.products, totalCount: data.total });
       }
-    );
+    });
   };
 
   const handlePaginationButton = (currentPage: number): void => {
     setIsLoadingProducts(true);
     setCurrentPage(currentPage);
-    fetchProducts(
-      setIsLoadingProducts,
-      setIsLoadingPagination,
-      currentPage,
-      10
+    const keyWord = getKeyWord();
+    (keyWord
+      ? searchProducts(
+          keyWord,
+          setIsLoadingProducts,
+          setIsLoadingPagination,
+          currentPage,
+          10
+        )
+      : fetchProducts(
+          setIsLoadingProducts,
+          setIsLoadingPagination,
+          currentPage,
+          10
+        )
     ).then((data) => {
       if (data) {
         setIsLoadingProducts(false);
