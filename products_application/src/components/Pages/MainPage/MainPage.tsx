@@ -39,7 +39,6 @@ export function MainPage(): React.ReactElement {
     const keyWord = getKeyWord();
     if (currentCard) {
       fetchProduct(currentCard, setIsLoadingProduct).then((data) => {
-        console.log(data);
         if (data) {
           setOpenedProduct({
             id: data.id,
@@ -178,28 +177,39 @@ export function MainPage(): React.ReactElement {
     <>
       <header className={styles.header} />
       <main className={styles.main}>
-        <SearchSection onSubmit={handleSearchButton} />
-        {!isLoadingPagination && (
-          <PagintionSection
-            currentPage={currentPage}
-            productCount={products.totalCount}
-            productsOnPage={quantityProductsOnPage}
-            onClick={handlePaginationButton}
-            onInput={handleItemsQuantityInput}
-          />
-        )}
-        {isLoadingProducts ? (
-          <Loader />
-        ) : (
-          <CardsSection products={products.productsArr} onClick={handleCard} />
-        )}
-        {currentCard && (
-          <Details
-            product={openedProduct}
-            isLoadingProduct={isLoadingProduct}
-            onClick={handleCloseButton}
-          />
-        )}
+        <div
+          className={
+            openedProduct
+              ? `${styles.container} ${styles.container_animationed}`
+              : `${styles.container}`
+          }
+        >
+          <SearchSection onSubmit={handleSearchButton} />
+          {!isLoadingPagination && (
+            <PagintionSection
+              currentPage={currentPage}
+              productCount={products.totalCount}
+              productsOnPage={quantityProductsOnPage}
+              onClick={handlePaginationButton}
+              onInput={handleItemsQuantityInput}
+            />
+          )}
+          {isLoadingProducts ? (
+            <Loader />
+          ) : (
+            <CardsSection
+              products={products.productsArr}
+              onClick={handleCard}
+            />
+          )}
+          {currentCard && (
+            <Details
+              product={openedProduct}
+              isLoadingProduct={isLoadingProduct}
+              onClick={handleCloseButton}
+            />
+          )}
+        </div>
       </main>
       <footer className={styles.footer} />
     </>

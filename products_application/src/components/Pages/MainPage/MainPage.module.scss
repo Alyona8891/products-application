@@ -1,3 +1,35 @@
 .main {
     flex: 1 1 auto;
 }
+
+.container {
+    max-width: 70%;
+    margin: 0 15%;
+    animation: slideout 0.7s ease-in-out;
+}
+
+@keyframes slideout {
+    from {
+        margin: 0 25% 0 5%;
+    }
+  
+    to {
+        margin: 0 15%;
+    }
+  }
+
+.container_animationed {
+    max-width: 70%;
+    margin: 0 25% 0 5%;
+    animation: slidein 0.7s ease-in-out;
+}
+
+@keyframes slidein {
+    from {
+        margin: 0 15%;
+    }
+  
+    to {
+        margin: 0 25% 0 5%;
+    }
+  }
