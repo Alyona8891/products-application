@@ -38,13 +38,13 @@ export function MainPage(): React.ReactElement {
           setIsLoadingProducts,
           setIsLoadingPagination,
           currentPage,
-          DEFAULT_ITEMS_QUANTITY
+          quantityProductsOnPage
         )
       : fetchProducts(
           setIsLoadingProducts,
           setIsLoadingPagination,
           currentPage,
-          DEFAULT_ITEMS_QUANTITY
+          quantityProductsOnPage
         )
     ).then((data) => {
       if (data) {
@@ -53,7 +53,7 @@ export function MainPage(): React.ReactElement {
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
-  }, [currentPage]);
+  }, [currentPage, quantityProductsOnPage]);
 
   const handleSearchButton = (keyWord: string): void => {
     setIsLoadingProducts(true);
