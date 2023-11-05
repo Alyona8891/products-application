@@ -13,9 +13,12 @@ import {
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../constants/constants';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { fetchProduct } from '../../../utils/fetchProduct';
+import { Details } from '../../Details/Details';
 
 export function MainPage(): React.ReactElement {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
   const [isLoadingPagination, setIsLoadingPagination] = useState(true);
   const [products, setProducts] = useState<{
     productsArr: IProduct[];
@@ -29,9 +32,26 @@ export function MainPage(): React.ReactElement {
   const queryParameters = new URLSearchParams(location.search);
   const currentPage =
     Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
+  const currentCard = Number(queryParameters.get('details')) || null;
+  const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
 
   useEffect(() => {
     const keyWord = getKeyWord();
+    if (currentCard) {
+      fetchProduct(currentCard, setIsLoadingProduct).then((data) => {
+        console.log(data);
+        if (data) {
+          setOpenedProduct({
+            id: data.id,
+            title: data.title,
+            text: data.text,
+            images: data.images,
+            description: data.description,
+          });
+          setIsLoadingProduct(false);
+        }
+      });
+    }
     (keyWord
       ? searchProducts(
           keyWord,
@@ -53,11 +73,27 @@ export function MainPage(): React.ReactElement {
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
-  }, [currentPage, quantityProductsOnPage]);
+  }, [currentCard, currentPage, quantityProductsOnPage]);
+
+  const handleCard = (id: number): void => {
+    handleQueryChange('page', currentPage);
+    handleQueryChange('details', id);
+    fetchProduct(id, setIsLoadingProduct).then((data) => {
+      if (data) {
+        setOpenedProduct({
+          id: data.id,
+          title: data.title,
+          text: data.text,
+          images: data.images,
+          description: data.description,
+        });
+        setIsLoadingProduct(false);
+      }
+    });
+  };
 
   const handleSearchButton = (keyWord: string): void => {
-    setIsLoadingProducts(true);
-    handlePageChange(DEFAULT_CURRENT_PAGE);
+    handleQueryChange('page', DEFAULT_CURRENT_PAGE);
     searchProducts(
       keyWord,
       setIsLoadingProducts,
@@ -72,10 +108,16 @@ export function MainPage(): React.ReactElement {
     });
   };
 
+  const handleCloseButton = (): void => {
+    setIsLoadingProduct(true);
+    queryParameters.delete('details');
+    navigate({ search: queryParameters.toString() });
+  };
+
   const handleItemsQuantityInput = (quantity: number): void => {
     setIsLoadingProducts(true);
     setProductsOnPage(quantity);
-    handlePageChange(DEFAULT_CURRENT_PAGE);
+    handleQueryChange('page', DEFAULT_CURRENT_PAGE);
     const keyWord = getKeyWord();
     (keyWord
       ? searchProducts(
@@ -100,14 +142,14 @@ export function MainPage(): React.ReactElement {
     });
   };
 
-  const handlePageChange = (page: number) => {
-    queryParameters.set('page', page.toString());
+  const handleQueryChange = (param: string, value: number) => {
+    queryParameters.set(`${param}`, value.toString());
     navigate({ search: queryParameters.toString() });
   };
 
   const handlePaginationButton = (currentPage: number): void => {
     setIsLoadingProducts(true);
-    handlePageChange(currentPage);
+    handleQueryChange('page', currentPage);
     const keyWord = getKeyWord();
     (keyWord
       ? searchProducts(
@@ -148,7 +190,14 @@ export function MainPage(): React.ReactElement {
         {isLoadingProducts ? (
           <Loader />
         ) : (
-          <CardsSection products={products.productsArr} />
+          <CardsSection products={products.productsArr} onClick={handleCard} />
+        )}
+        {currentCard && (
+          <Details
+            product={openedProduct}
+            isLoadingProduct={isLoadingProduct}
+            onClick={handleCloseButton}
+          />
         )}
       </main>
       <footer className={styles.footer} />
