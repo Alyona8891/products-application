@@ -12,7 +12,7 @@ export function ItemQuantityInput(props: {
   );
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
       <label className={styles.label} htmlFor="quantity_input">
         Enter number of items shown per page
       </label>
