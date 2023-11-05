@@ -21,7 +21,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    background-color: plum;
+    background-color: yellowgreen;
     width: 20%;
     height: 100%;
     display: flex;
@@ -52,8 +52,13 @@
     border: 0;
     cursor: pointer;
     transform: rotate(45deg);
-    font-size: 22px;
+    font-size: 30px;
     z-index: 3;
+    transition: 0.3s;
+    &:hover {
+        color: rgb(148, 13, 13);
+        transition: 0.3s;
+    }
 }
 
 .image {
