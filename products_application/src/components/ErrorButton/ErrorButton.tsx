@@ -1,23 +1,20 @@
-import { Component } from 'react';
+import React, { useState } from 'react';
 import styles from './ErrorButton.module.scss';
 
-export class ErrorButton extends Component<object, { error: boolean }, string> {
-  state = { error: false };
+export function ErrorButton(): React.ReactElement {
+  const [isCrashed, setIsCrashed] = useState(false);
 
-  handleErrorButton = () => {
-    this.setState({
-      error: true,
-    });
+  const handleErrorButton = () => {
+    setIsCrashed(true);
   };
 
-  render() {
-    if (this.state.error) {
-      throw new Error('Crashing the app!');
-    }
-    return (
-      <button className={styles.error_button} onClick={this.handleErrorButton}>
-        Throw Error
-      </button>
-    );
+  if (isCrashed) {
+    throw new Error('Crashing the app!');
   }
+
+  return (
+    <button className={styles.error_button} onClick={handleErrorButton}>
+      Throw Error
+    </button>
+  );
 }
