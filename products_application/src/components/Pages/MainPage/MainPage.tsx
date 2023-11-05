@@ -112,6 +112,7 @@ export function MainPage(): React.ReactElement {
     setIsLoadingProduct(true);
     queryParameters.delete('details');
     navigate({ search: queryParameters.toString() });
+    setOpenedProduct(null);
   };
 
   const handleItemsQuantityInput = (quantity: number): void => {

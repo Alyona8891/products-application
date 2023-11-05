@@ -12,13 +12,16 @@ export function Details(props: {
 
   return (
     <section className={styles.details}>
-      <button className={styles.close_button} onClick={onClick}>
-        +
-      </button>
+      <div className={styles.shadow} onClick={onClick} />
       {isLoadingProduct ? (
-        <Loader />
+        <div className={styles.container}>
+          <Loader />
+        </div>
       ) : product?.title ? (
         <div className={styles.container}>
+          <button className={styles.close_button} onClick={onClick}>
+            +
+          </button>
           <img
             className={styles.image}
             src={product.images[0]}
@@ -28,9 +31,14 @@ export function Details(props: {
           <p className={styles.text}>{product.description}</p>
         </div>
       ) : (
-        <p className={styles.message}>
-          Sorry, nothing found. Please, try again!
-        </p>
+        <div className={styles.container}>
+          <button className={styles.close_button} onClick={onClick}>
+            +
+          </button>
+          <p className={styles.message}>
+            Sorry, nothing found. Please, try again!
+          </p>
+        </div>
       )}
       <Outlet />
     </section>
