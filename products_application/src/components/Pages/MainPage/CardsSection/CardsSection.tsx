@@ -1,17 +1,25 @@
+import { Link } from 'react-router-dom';
 import { IProduct } from '../../../../types/types';
 import { Card } from './Card/Card';
 import styles from './CardsSection.module.scss';
 
 export function CardsSection(props: {
   products: IProduct[];
-  onClick: (id: number) => void;
+  currentPage: number;
 }): React.ReactElement {
-  const { products, onClick } = props;
+  const { products, currentPage } = props;
   return (
     <section className={styles.cards_section}>
       {products.length > 0 ? (
         products.map((product: IProduct) => {
-          return <Card product={product} key={product.id} onClick={onClick} />;
+          return (
+            <Link
+              to={`details/?page=${currentPage}&details=${product.id}`}
+              key={product.id}
+            >
+              <Card product={product} />;
+            </Link>
+          );
         })
       ) : (
         <p className={styles.message}>

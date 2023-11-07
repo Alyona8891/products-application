@@ -12,13 +12,10 @@ import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../constants/constants';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchProduct } from '../../../utils/fetchProduct';
-import { Details } from '../../Details/Details';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export function MainPage(): React.ReactElement {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
   const [isLoadingPagination, setIsLoadingPagination] = useState(true);
   const [products, setProducts] = useState<{
     productsArr: IProduct[];
@@ -33,24 +30,9 @@ export function MainPage(): React.ReactElement {
   const currentPage =
     Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
   const currentCard = Number(queryParameters.get('details')) || null;
-  const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
 
   useEffect(() => {
     const keyWord = getKeyWord();
-    if (currentCard) {
-      fetchProduct(currentCard, setIsLoadingProduct).then((data) => {
-        if (data) {
-          setOpenedProduct({
-            id: data.id,
-            title: data.title,
-            text: data.text,
-            images: data.images,
-            description: data.description,
-          });
-          setIsLoadingProduct(false);
-        }
-      });
-    }
     (keyWord
       ? searchProducts(
           keyWord,
@@ -74,23 +56,6 @@ export function MainPage(): React.ReactElement {
     });
   }, [currentCard, currentPage, quantityProductsOnPage]);
 
-  const handleCard = (id: number): void => {
-    handleQueryChange('page', currentPage);
-    handleQueryChange('details', id);
-    fetchProduct(id, setIsLoadingProduct).then((data) => {
-      if (data) {
-        setOpenedProduct({
-          id: data.id,
-          title: data.title,
-          text: data.text,
-          images: data.images,
-          description: data.description,
-        });
-        setIsLoadingProduct(false);
-      }
-    });
-  };
-
   const handleSearchButton = (keyWord: string): void => {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
     searchProducts(
@@ -105,13 +70,6 @@ export function MainPage(): React.ReactElement {
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
     });
-  };
-
-  const handleCloseButton = (): void => {
-    setIsLoadingProduct(true);
-    queryParameters.delete('details');
-    navigate({ search: queryParameters.toString() });
-    setOpenedProduct(null);
   };
 
   const handleItemsQuantityInput = (quantity: number): void => {
@@ -179,7 +137,7 @@ export function MainPage(): React.ReactElement {
       <main className={styles.main}>
         <div
           className={
-            openedProduct
+            currentCard
               ? `${styles.container} ${styles.container_animationed}`
               : `${styles.container}`
           }
@@ -199,16 +157,10 @@ export function MainPage(): React.ReactElement {
           ) : (
             <CardsSection
               products={products.productsArr}
-              onClick={handleCard}
+              currentPage={currentPage}
             />
           )}
-          {currentCard && (
-            <Details
-              product={openedProduct}
-              isLoadingProduct={isLoadingProduct}
-              onClick={handleCloseButton}
-            />
-          )}
+          {currentCard && <Outlet />}
         </div>
       </main>
       <footer className={styles.footer} />

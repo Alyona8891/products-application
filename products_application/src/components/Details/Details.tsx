@@ -1,46 +1,75 @@
 import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
-import { Outlet } from 'react-router-dom';
 import { Loader } from '../Loader/Loader';
+import { useEffect, useState } from 'react';
+import { fetchProduct } from '../../utils/fetchProduct';
+import { Link, useNavigate } from 'react-router-dom';
+import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
 
-export function Details(props: {
-  product: IProduct | null;
-  isLoadingProduct: boolean;
-  onClick: () => void;
-}): React.ReactElement {
-  const { product, isLoadingProduct, onClick } = props;
+export function Details(): React.ReactElement {
+  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
+  const queryParameters = new URLSearchParams(location.search);
+  const navigate = useNavigate();
+  const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
+  const currentCard = Number(queryParameters.get('details')) || null;
+  const handleCloseButton = (): void => {
+    setIsLoadingProduct(true);
+    navigate({ search: queryParameters.toString() });
+    setOpenedProduct(null);
+  };
+  const currentPage =
+    Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
+
+  useEffect(() => {
+    if (currentCard) {
+      fetchProduct(currentCard, setIsLoadingProduct).then((data) => {
+        if (data) {
+          setOpenedProduct({
+            id: data.id,
+            title: data.title,
+            text: data.text,
+            images: data.images,
+            description: data.description,
+          });
+          setIsLoadingProduct(false);
+        }
+      });
+    }
+  }, [currentCard]);
 
   return (
     <section className={styles.details}>
-      <div className={styles.shadow} onClick={onClick} />
+      <Link to={`/?page=${currentPage}`}>
+        <div className={styles.shadow} onClick={handleCloseButton} />
+      </Link>
+
       {isLoadingProduct ? (
         <div className={styles.container}>
           <Loader />
         </div>
-      ) : product?.title ? (
+      ) : openedProduct?.title ? (
         <div className={styles.container}>
-          <button className={styles.close_button} onClick={onClick}>
+          <Link to={`/?page=${currentPage}`} className={styles.close_button}>
             +
-          </button>
+          </Link>
           <img
             className={styles.image}
-            src={product.images[0]}
+            src={openedProduct.images[0]}
             alt="card image"
           />
-          <h3 className={styles.title}>{product.title}</h3>
-          <p className={styles.text}>{product.description}</p>
+          <h3 className={styles.title}>{openedProduct.title}</h3>
+          <p className={styles.text}>{openedProduct.description}</p>
         </div>
       ) : (
         <div className={styles.container}>
-          <button className={styles.close_button} onClick={onClick}>
+          <Link to={`/?page=${currentPage}`} className={styles.close_button}>
             +
-          </button>
+          </Link>
           <p className={styles.message}>
             Sorry, nothing found. Please, try again!
           </p>
         </div>
       )}
-      <Outlet />
     </section>
   );
 }
