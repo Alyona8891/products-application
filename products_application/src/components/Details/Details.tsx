@@ -43,7 +43,6 @@ export function Details(): React.ReactElement {
       <Link to={`/?page=${currentPage}`}>
         <div className={styles.shadow} onClick={handleCloseButton} />
       </Link>
-
       {isLoadingProduct ? (
         <div className={styles.container}>
           <Loader />

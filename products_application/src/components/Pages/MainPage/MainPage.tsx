@@ -13,7 +13,7 @@ import {
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../constants/constants';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { getProducts, searchProducts } from '../../../utils/api';
+import { getProducts } from '../../../utils/api';
 
 export function MainPage(): React.ReactElement {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
@@ -34,10 +34,7 @@ export function MainPage(): React.ReactElement {
 
   useEffect(() => {
     const keyWord = getKeyWord();
-    (keyWord
-      ? searchProducts(keyWord, currentPage, quantityProductsOnPage)
-      : getProducts(currentPage, quantityProductsOnPage)
-    ).then((data) => {
+    getProducts(keyWord, currentPage, quantityProductsOnPage).then((data) => {
       if (data) {
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
@@ -48,7 +45,7 @@ export function MainPage(): React.ReactElement {
 
   const handleSearchButton = (keyWord: string): void => {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    searchProducts(keyWord, DEFAULT_CURRENT_PAGE, quantityProductsOnPage).then(
+    getProducts(keyWord, DEFAULT_CURRENT_PAGE, quantityProductsOnPage).then(
       (data) => {
         if (data) {
           setIsLoadingProducts(false);
@@ -65,10 +62,7 @@ export function MainPage(): React.ReactElement {
     setProductsOnPage(quantity);
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
     const keyWord = getKeyWord();
-    (keyWord
-      ? searchProducts(keyWord, DEFAULT_CURRENT_PAGE, quantity)
-      : getProducts(DEFAULT_CURRENT_PAGE, quantity)
-    ).then((data) => {
+    getProducts(keyWord, currentPage, quantityProductsOnPage).then((data) => {
       if (data) {
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
@@ -86,10 +80,7 @@ export function MainPage(): React.ReactElement {
     setIsLoadingProducts(true);
     handleQueryChange('page', currentPage);
     const keyWord = getKeyWord();
-    (keyWord
-      ? searchProducts(keyWord, currentPage, quantityProductsOnPage)
-      : getProducts(currentPage, quantityProductsOnPage)
-    ).then((data) => {
+    getProducts(keyWord, currentPage, quantityProductsOnPage).then((data) => {
       if (data) {
         setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
