@@ -35,42 +35,29 @@ export function MainPage(): React.ReactElement {
   useEffect(() => {
     const keyWord = getKeyWord();
     (keyWord
-      ? searchProducts(
-          keyWord,
-          setIsLoadingProducts,
-          setIsLoadingPagination,
-          currentPage,
-          quantityProductsOnPage
-        )
-      : getProducts(
-          setIsLoadingProducts,
-          setIsLoadingPagination,
-          currentPage,
-          quantityProductsOnPage
-        )
+      ? searchProducts(keyWord, currentPage, quantityProductsOnPage)
+      : getProducts(currentPage, quantityProductsOnPage)
     ).then((data) => {
       if (data) {
-        setIsLoadingPagination(false);
-        setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
+      setIsLoadingPagination(false);
+      setIsLoadingProducts(false);
     });
   }, [currentCard, currentPage, quantityProductsOnPage]);
 
   const handleSearchButton = (keyWord: string): void => {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    searchProducts(
-      keyWord,
-      setIsLoadingProducts,
-      setIsLoadingPagination,
-      DEFAULT_CURRENT_PAGE,
-      quantityProductsOnPage
-    ).then((data) => {
-      if (data) {
+    searchProducts(keyWord, DEFAULT_CURRENT_PAGE, quantityProductsOnPage).then(
+      (data) => {
+        if (data) {
+          setIsLoadingProducts(false);
+          setProducts({ productsArr: data.products, totalCount: data.total });
+        }
+        setIsLoadingPagination(false);
         setIsLoadingProducts(false);
-        setProducts({ productsArr: data.products, totalCount: data.total });
       }
-    });
+    );
   };
 
   const handleItemsQuantityInput = (quantity: number): void => {
@@ -79,25 +66,14 @@ export function MainPage(): React.ReactElement {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
     const keyWord = getKeyWord();
     (keyWord
-      ? searchProducts(
-          keyWord,
-          setIsLoadingProducts,
-          setIsLoadingPagination,
-          DEFAULT_CURRENT_PAGE,
-          quantity
-        )
-      : getProducts(
-          setIsLoadingProducts,
-          setIsLoadingPagination,
-          DEFAULT_CURRENT_PAGE,
-          quantity
-        )
+      ? searchProducts(keyWord, DEFAULT_CURRENT_PAGE, quantity)
+      : getProducts(DEFAULT_CURRENT_PAGE, quantity)
     ).then((data) => {
       if (data) {
-        setIsLoadingPagination(false);
-        setIsLoadingProducts(false);
         setProducts({ productsArr: data.products, totalCount: data.total });
       }
+      setIsLoadingPagination(false);
+      setIsLoadingProducts(false);
     });
   };
 
@@ -111,19 +87,8 @@ export function MainPage(): React.ReactElement {
     handleQueryChange('page', currentPage);
     const keyWord = getKeyWord();
     (keyWord
-      ? searchProducts(
-          keyWord,
-          setIsLoadingProducts,
-          setIsLoadingPagination,
-          currentPage,
-          quantityProductsOnPage
-        )
-      : getProducts(
-          setIsLoadingProducts,
-          setIsLoadingPagination,
-          currentPage,
-          quantityProductsOnPage
-        )
+      ? searchProducts(keyWord, currentPage, quantityProductsOnPage)
+      : getProducts(currentPage, quantityProductsOnPage)
     ).then((data) => {
       if (data) {
         setIsLoadingProducts(false);

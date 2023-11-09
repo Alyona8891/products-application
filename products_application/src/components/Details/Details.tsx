@@ -23,7 +23,7 @@ export function Details(): React.ReactElement {
 
   useEffect(() => {
     if (currentCard) {
-      getProduct(currentCard, setIsLoadingProduct).then((data) => {
+      getProduct(currentCard).then((data) => {
         if (data) {
           setOpenedProduct({
             id: data.id,
@@ -32,8 +32,8 @@ export function Details(): React.ReactElement {
             images: data.images,
             description: data.description,
           });
-          setIsLoadingProduct(false);
         }
+        setIsLoadingProduct(false);
       });
     }
   }, [currentCard]);
