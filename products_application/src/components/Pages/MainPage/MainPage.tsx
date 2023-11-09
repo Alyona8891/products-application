@@ -3,9 +3,9 @@ import { Loader } from '../../Loader/Loader';
 import styles from './MainPage.module.scss';
 import { SearchSection } from './SearchSection/SearchSection';
 import { CardsSection } from './CardsSection/CardsSection';
-import { fetchProducts } from '../../../utils/fetchProducts';
+
 import { IProduct } from '../../../types/types';
-import { searchProducts } from '../../../utils/searchProducts';
+
 import { getKeyWord } from '../../../utils/getKeyWord';
 import { PagintionSection } from './PaginationSection/PaginationSection';
 import {
@@ -13,6 +13,7 @@ import {
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../constants/constants';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { getProducts, searchProducts } from '../../../utils/api';
 
 export function MainPage(): React.ReactElement {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
@@ -41,7 +42,7 @@ export function MainPage(): React.ReactElement {
           currentPage,
           quantityProductsOnPage
         )
-      : fetchProducts(
+      : getProducts(
           setIsLoadingProducts,
           setIsLoadingPagination,
           currentPage,
@@ -85,7 +86,7 @@ export function MainPage(): React.ReactElement {
           DEFAULT_CURRENT_PAGE,
           quantity
         )
-      : fetchProducts(
+      : getProducts(
           setIsLoadingProducts,
           setIsLoadingPagination,
           DEFAULT_CURRENT_PAGE,
@@ -117,7 +118,7 @@ export function MainPage(): React.ReactElement {
           currentPage,
           quantityProductsOnPage
         )
-      : fetchProducts(
+      : getProducts(
           setIsLoadingProducts,
           setIsLoadingPagination,
           currentPage,
