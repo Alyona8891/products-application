@@ -1,5 +1,5 @@
-import { ErrorButton } from '../../../ErrorButton/ErrorButton';
-import { SearchBlock } from './SearchBlock/SearchBlock';
+import { ErrorButton } from '../../../../ErrorButton/ErrorButton';
+import { SearchBlock } from '../SearchBlock/SearchBlock';
 import styles from './SearchSection.module.scss';
 
 export function SearchSection(props: {

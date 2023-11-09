@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { IProduct } from '../../../../types/types';
-import { Card } from './Card/Card';
+import { IProduct } from '../../../../../types/types';
+import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
 
 export function CardsSection(props: {

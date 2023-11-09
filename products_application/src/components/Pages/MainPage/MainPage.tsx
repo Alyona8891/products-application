@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Loader } from '../../Loader/Loader';
 import styles from './MainPage.module.scss';
-import { SearchSection } from './SearchSection/SearchSection';
-import { CardsSection } from './CardsSection/CardsSection';
+import { SearchSection } from './components/SearchSection/SearchSection';
+import { CardsSection } from './components/CardsSection/CardsSection';
 
 import { IProduct } from '../../../types/types';
 
 import { getKeyWord } from '../../../utils/getKeyWord';
-import { PagintionSection } from './PaginationSection/PaginationSection';
+import { PagintionSection } from './components/PaginationSection/PaginationSection';
 import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
