@@ -2,9 +2,10 @@ import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
 import { Loader } from '../Loader/Loader';
 import { useEffect, useState } from 'react';
-import { fetchProduct } from '../../utils/fetchProduct';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
+import { getProduct } from '../../utils/api';
 
 export function Details(): React.ReactElement {
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
@@ -22,7 +23,7 @@ export function Details(): React.ReactElement {
 
   useEffect(() => {
     if (currentCard) {
-      fetchProduct(currentCard, setIsLoadingProduct).then((data) => {
+      getProduct(currentCard, setIsLoadingProduct).then((data) => {
         if (data) {
           setOpenedProduct({
             id: data.id,
