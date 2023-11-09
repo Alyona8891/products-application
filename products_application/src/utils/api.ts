@@ -7,10 +7,9 @@ export async function getProducts(
   productsOnPage: number
 ): Promise<IRequestResult | null> {
   const skipCount = (currentPage - 1) * productsOnPage;
-  const limitCount = currentPage * productsOnPage;
   try {
     const res = await fetch(
-      `https://dummyjson.com/products/search?q=${keyword}&limit=${limitCount}&skip=${skipCount}`
+      `https://dummyjson.com/products/search?q=${keyword}&limit=${productsOnPage}&skip=${skipCount}`
     );
     const json = await res.json();
     return json;

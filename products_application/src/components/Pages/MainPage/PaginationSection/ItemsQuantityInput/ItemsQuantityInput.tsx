@@ -22,6 +22,7 @@ export function ItemQuantityInput(props: {
         value={inputValue}
         placeholder={DEFAULT_ITEMS_QUANTITY.toString()}
         onChange={(e) => {
+          e.target.disabled = true;
           const target = +e.target.value;
           if (target > 0) {
             setInputValue(+e.target.value);
@@ -31,6 +32,7 @@ export function ItemQuantityInput(props: {
             setInputValue('');
             onInput(DEFAULT_ITEMS_QUANTITY);
           }
+          e.target.disabled = false;
         }}
       />
     </form>
