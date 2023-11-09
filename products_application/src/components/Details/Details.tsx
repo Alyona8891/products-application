@@ -2,7 +2,6 @@ import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
 import { Loader } from '../Loader/Loader';
 import { useEffect, useState } from 'react';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
 import { getProduct } from '../../utils/api';
@@ -25,13 +24,7 @@ export function Details(): React.ReactElement {
     if (currentCard) {
       getProduct(currentCard).then((data) => {
         if (data) {
-          setOpenedProduct({
-            id: data.id,
-            title: data.title,
-            text: data.text,
-            images: data.images,
-            description: data.description,
-          });
+          setOpenedProduct({ ...data });
         }
         setIsLoadingProduct(false);
       });
