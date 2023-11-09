@@ -1,0 +1,20 @@
+.cards_section {
+    position: relative;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}  
+
+.message {
+    position: absolute;
+    top: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: monospace;
+    width: 100%;
+    margin: 0 auto;
+}

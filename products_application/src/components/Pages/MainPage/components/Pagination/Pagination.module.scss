@@ -1,0 +1,32 @@
+.pagination {
+    display: flex;
+    margin: 10px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+  
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    width: 1.5em;
+    height: 1.5em;
+    background-color: greenyellow;
+    border: 1px solid greenyellow;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    color: black;
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+    &:not(:disabled):hover {
+      background-color: yellow;
+    }
+}
+
+.button_active {
+    background-color: yellow;
+}
+  
