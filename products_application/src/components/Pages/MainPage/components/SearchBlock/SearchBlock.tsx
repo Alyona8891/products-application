@@ -1,18 +1,19 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect } from 'react';
 import styles from './SearchBlock.module.scss';
 import { setLocalStorageData } from '../../../../../utils/setLocalStorageData';
 import { getKeyWord } from '../../../../../utils/getKeyWord';
+import { ProductsContext } from '../../../../ProductsContext/ProductsContext';
 
 export function SearchBlock(props: {
   onSubmit: (keyWord: string) => void;
 }): React.ReactElement {
   const { onSubmit } = props;
-
-  const [inputValue, setInputValue] = useState('');
+  const context = useContext(ProductsContext);
+  const { inputValue, setInputValue } = context;
 
   useEffect(() => {
     setInputValue(getKeyWord());
-  }, []);
+  }, [setInputValue]);
 
   const handleSearchButton = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();

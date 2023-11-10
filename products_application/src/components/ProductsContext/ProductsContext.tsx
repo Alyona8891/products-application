@@ -12,6 +12,8 @@ type ProductsContextProps = {
     quantityProductsOnPage: number
   ) => void;
   setIsLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const ProductsContext = createContext({} as ProductsContextProps);
@@ -27,6 +29,7 @@ export function ProductsProvider({
   });
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingPagination, setIsLoadingPagination] = useState(true);
+  const [inputValue, setInputValue] = useState('');
 
   const getProductsData = useCallback(
     (keyWord: string, currentPage: number, quantityProductsOnPage: number) => {
@@ -52,6 +55,8 @@ export function ProductsProvider({
         isLoadingPagination,
         getProductsData,
         setIsLoadingProducts,
+        inputValue,
+        setInputValue,
       }}
     >
       {children}
