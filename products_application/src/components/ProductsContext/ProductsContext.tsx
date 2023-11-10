@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, useCallback, useState } from 'react';
 import { IRequestResult } from '../../types/types';
 import { getProducts } from '../../utils/api';
 
@@ -50,10 +44,6 @@ export function ProductsProvider({
     []
   );
 
-  useEffect(() => {
-    getProductsData('', 1, 10);
-  }, [getProductsData]);
-
   return (
     <ProductsContext.Provider
       value={{
@@ -67,12 +57,4 @@ export function ProductsProvider({
       {children}
     </ProductsContext.Provider>
   );
-}
-
-export function useProducts() {
-  const context = useContext(ProductsContext);
-  if (context === undefined) {
-    throw new Error('Context must be used within a Provider');
-  }
-  return context;
 }

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Loader } from '../../Loader/Loader';
 import styles from './MainPage.module.scss';
 import { SearchSection } from './components/SearchSection/SearchSection';
@@ -31,6 +31,11 @@ export function MainPage(): React.ReactElement {
     getProductsData,
     setIsLoadingProducts,
   } = context;
+
+  useEffect(() => {
+    const keyWord = getKeyWord();
+    getProductsData(keyWord, currentPage, quantityProductsOnPage);
+  }, [currentPage, getProductsData, quantityProductsOnPage]);
 
   const handleSearchButton = (keyWord: string): void => {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
