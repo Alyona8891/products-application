@@ -2,12 +2,16 @@ import { Link } from 'react-router-dom';
 import { IProduct } from '../../../../../types/types';
 import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
+import { useContext } from 'react';
+import { ProductsContext } from '../../../../ProductsContext/ProductsContext';
 
 export function CardsSection(props: {
-  products: IProduct[];
   currentPage: number;
 }): React.ReactElement {
-  const { products, currentPage } = props;
+  const { currentPage } = props;
+  const context = useContext(ProductsContext);
+  const { productsData } = context;
+  const { products } = productsData;
   return (
     <section className={styles.cards_section}>
       {products.length > 0 ? (

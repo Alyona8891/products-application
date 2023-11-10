@@ -1,13 +1,17 @@
+import { useContext } from 'react';
 import { getPagesArr } from '../../../../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
+import { ProductsContext } from '../../../../ProductsContext/ProductsContext';
 
 export function Pagination(props: {
   currentPage: number;
-  productCount: number;
   productsOnPage: number;
   onClick: (currentPage: number) => void;
 }): React.ReactElement {
-  const { currentPage, productCount, productsOnPage, onClick } = props;
+  const { currentPage, productsOnPage, onClick } = props;
+  const context = useContext(ProductsContext);
+  const { productsData } = context;
+  const productCount = productsData.total;
 
   return (
     <div className={styles.pagination}>

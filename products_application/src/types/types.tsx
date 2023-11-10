@@ -1,7 +1,6 @@
 export interface IRequestResult {
-  limit: number;
   total: number;
-  products: IProduct[];
+  products: IProduct[] | [];
 }
 
 export interface IProduct {

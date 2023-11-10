@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Loader } from '../../Loader/Loader';
 import styles from './MainPage.module.scss';
 import { SearchSection } from './components/SearchSection/SearchSection';
 import { CardsSection } from './components/CardsSection/CardsSection';
-
-import { IProduct } from '../../../types/types';
 
 import { getKeyWord } from '../../../utils/getKeyWord';
 import { PagintionSection } from './components/PaginationSection/PaginationSection';
@@ -13,15 +11,9 @@ import {
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../constants/constants';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { getProducts } from '../../../utils/api';
+import { ProductsContext } from '../../ProductsContext/ProductsContext';
 
 export function MainPage(): React.ReactElement {
-  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [isLoadingPagination, setIsLoadingPagination] = useState(true);
-  const [products, setProducts] = useState<{
-    productsArr: IProduct[];
-    totalCount: number;
-  }>({ productsArr: [], totalCount: 0 });
   const [quantityProductsOnPage, setProductsOnPage] = useState(
     DEFAULT_ITEMS_QUANTITY
   );
@@ -32,29 +24,17 @@ export function MainPage(): React.ReactElement {
     Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
   const currentCard = Number(queryParameters.get('details')) || null;
 
-  useEffect(() => {
-    const keyWord = getKeyWord();
-    getProducts(keyWord, currentPage, quantityProductsOnPage).then((data) => {
-      if (data) {
-        setProducts({ productsArr: data.products, totalCount: data.total });
-      }
-      setIsLoadingPagination(false);
-      setIsLoadingProducts(false);
-    });
-  }, [currentCard, currentPage, quantityProductsOnPage]);
+  const context = useContext(ProductsContext);
+  const {
+    isLoadingProducts,
+    isLoadingPagination,
+    getProductsData,
+    setIsLoadingProducts,
+  } = context;
 
   const handleSearchButton = (keyWord: string): void => {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    getProducts(keyWord, DEFAULT_CURRENT_PAGE, quantityProductsOnPage).then(
-      (data) => {
-        if (data) {
-          setIsLoadingProducts(false);
-          setProducts({ productsArr: data.products, totalCount: data.total });
-        }
-        setIsLoadingPagination(false);
-        setIsLoadingProducts(false);
-      }
-    );
+    getProductsData(keyWord, DEFAULT_CURRENT_PAGE, quantityProductsOnPage);
   };
 
   const handleItemsQuantityInput = (quantity: number): void => {
@@ -62,13 +42,7 @@ export function MainPage(): React.ReactElement {
     setProductsOnPage(quantity);
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
     const keyWord = getKeyWord();
-    getProducts(keyWord, currentPage, quantityProductsOnPage).then((data) => {
-      if (data) {
-        setProducts({ productsArr: data.products, totalCount: data.total });
-      }
-      setIsLoadingPagination(false);
-      setIsLoadingProducts(false);
-    });
+    getProductsData(keyWord, DEFAULT_CURRENT_PAGE, quantity);
   };
 
   const handleQueryChange = (param: string, value: number) => {
@@ -80,12 +54,7 @@ export function MainPage(): React.ReactElement {
     setIsLoadingProducts(true);
     handleQueryChange('page', currentPage);
     const keyWord = getKeyWord();
-    getProducts(keyWord, currentPage, quantityProductsOnPage).then((data) => {
-      if (data) {
-        setIsLoadingProducts(false);
-        setProducts({ productsArr: data.products, totalCount: data.total });
-      }
-    });
+    getProductsData(keyWord, currentPage, quantityProductsOnPage);
   };
 
   return (
@@ -103,7 +72,6 @@ export function MainPage(): React.ReactElement {
           {!isLoadingPagination && (
             <PagintionSection
               currentPage={currentPage}
-              productCount={products.totalCount}
               productsOnPage={quantityProductsOnPage}
               onClick={handlePaginationButton}
               onInput={handleItemsQuantityInput}
@@ -112,12 +80,9 @@ export function MainPage(): React.ReactElement {
           {isLoadingProducts ? (
             <Loader />
           ) : (
-            <CardsSection
-              products={products.productsArr}
-              currentPage={currentPage}
-            />
+            <CardsSection currentPage={currentPage} />
           )}
-          {currentCard && <Outlet />}
+          <Outlet />
         </div>
       </main>
       <footer className={styles.footer} />
