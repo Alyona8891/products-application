@@ -1,22 +1,9 @@
 import { createContext, useCallback, useState } from 'react';
-import { IRequestResult } from '../../types/types';
+import { AppContextProps, IRequestResult } from '../../types/types';
 import { getProducts } from '../../utils/api';
+import { DEFAULT_ITEMS_QUANTITY } from '../../constants/constants';
 
-type ProductsContextProps = {
-  productsData: IRequestResult;
-  isLoadingProducts: boolean;
-  isLoadingPagination: boolean;
-  getProductsData: (
-    keyWord: string,
-    currentPage: number,
-    quantityProductsOnPage: number
-  ) => void;
-  setIsLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>;
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
-};
-
-export const ProductsContext = createContext({} as ProductsContextProps);
+export const AppContext = createContext({} as AppContextProps);
 
 export function ProductsProvider({
   children,
@@ -27,6 +14,9 @@ export function ProductsProvider({
     products: [],
     total: 0,
   });
+  const [quantityProductsOnPage, setProductsOnPage] = useState(
+    DEFAULT_ITEMS_QUANTITY
+  );
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingPagination, setIsLoadingPagination] = useState(true);
   const [inputValue, setInputValue] = useState('');
@@ -48,7 +38,7 @@ export function ProductsProvider({
   );
 
   return (
-    <ProductsContext.Provider
+    <AppContext.Provider
       value={{
         productsData,
         isLoadingProducts,
@@ -57,9 +47,11 @@ export function ProductsProvider({
         setIsLoadingProducts,
         inputValue,
         setInputValue,
+        setProductsOnPage,
+        quantityProductsOnPage,
       }}
     >
       {children}
-    </ProductsContext.Provider>
+    </AppContext.Provider>
   );
 }

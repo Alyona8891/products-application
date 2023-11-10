@@ -18,3 +18,19 @@ export interface IErrorBoundaryProps {
 export interface IErrorBoundaryState {
   hasError: boolean;
 }
+
+export type AppContextProps = {
+  productsData: IRequestResult;
+  isLoadingProducts: boolean;
+  isLoadingPagination: boolean;
+  getProductsData: (
+    keyWord: string,
+    currentPage: number,
+    quantityProductsOnPage: number
+  ) => void;
+  setIsLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  quantityProductsOnPage: number;
+  setProductsOnPage: React.Dispatch<React.SetStateAction<number>>;
+};

@@ -3,13 +3,13 @@ import { SearchBlock } from '../SearchBlock/SearchBlock';
 import styles from './SearchSection.module.scss';
 
 export function SearchSection(props: {
-  onSubmit: (keyWord: string) => void;
+  handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
-  const { onSubmit } = props;
+  const { handleQueryChange } = props;
   return (
     <section className={styles.search_section}>
       <ErrorButton />
-      <SearchBlock onSubmit={onSubmit} />
+      <SearchBlock handleQueryChange={handleQueryChange} />
     </section>
   );
 }
