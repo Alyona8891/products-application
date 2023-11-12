@@ -41,14 +41,14 @@ export function Details(): React.ReactElement {
           <Loader />
         </div>
       ) : openedProduct?.title ? (
-        <div className={styles.container}>
+        <div className={styles.container} data-testid="details">
           <Link to={`/?page=${currentPage}`} className={styles.close_button}>
             +
           </Link>
           <img
             className={styles.image}
             src={openedProduct.images[0]}
-            alt="card image"
+            alt="detail image"
           />
           <h3 className={styles.title}>{openedProduct.title}</h3>
           <p className={styles.text}>{openedProduct.description}</p>
