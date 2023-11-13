@@ -1,10 +1,10 @@
-import { IProduct, IProducts } from '../types/types';
+import { IProduct, IRequestResult } from '../types/types';
 
 export async function getProducts(
   keyword: string,
   currentPage: number,
   productsOnPage: number
-): Promise<IProducts | null> {
+): Promise<IRequestResult | null> {
   const skipCount = (currentPage - 1) * productsOnPage;
   try {
     const res = await fetch(
