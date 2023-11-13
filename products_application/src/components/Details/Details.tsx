@@ -32,7 +32,7 @@ export function Details(): React.ReactElement {
   }, [currentCard]);
 
   return (
-    <section className={styles.details} data-testid="details">
+    <section className={styles.details}>
       <Link to={`/?page=${currentPage}`}>
         <div className={styles.shadow} onClick={handleCloseButton} />
       </Link>
@@ -41,7 +41,7 @@ export function Details(): React.ReactElement {
           <Loader />
         </div>
       ) : openedProduct?.title ? (
-        <div className={styles.container}>
+        <div className={styles.container} data-testid="details">
           <Link to={`/?page=${currentPage}`} className={styles.close_button}>
             +
           </Link>
