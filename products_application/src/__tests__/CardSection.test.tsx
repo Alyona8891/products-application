@@ -3,7 +3,7 @@ import { AppContext } from '../components/AppContext/AppContext';
 import { beforeEach, expect, test, describe } from 'vitest';
 import { CardsSection } from '../components/Pages/MainPage/components/CardsSection/CardsSection';
 import { MemoryRouter } from 'react-router-dom';
-import { mockContext, mockEmptyContext } from './mockData';
+import { mockContext, mockEmptyContext } from './mockData/mockData';
 
 describe('testing CardSection.tsx', () => {
   beforeEach((): void => {

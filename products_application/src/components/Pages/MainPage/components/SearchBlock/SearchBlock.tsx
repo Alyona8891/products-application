@@ -35,8 +35,13 @@ export function SearchBlock(props: {
         id="search_input"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        data-testid="searchInput"
       />
-      <button className={styles.search_button} type="submit">
+      <button
+        className={styles.search_button}
+        type="submit"
+        data-testid="searchButton"
+      >
         Search
       </button>
     </form>

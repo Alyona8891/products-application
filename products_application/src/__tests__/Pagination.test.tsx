@@ -1,14 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { expect, test, Mock, vi } from 'vitest';
-import { mockRequestResult } from './mockData';
-import { IProduct, IRequestResult } from '../types/types';
+import { mockRequestResult } from './mockData/mockData';
 import { App } from '../components/App/App';
+import { createFetchResponse } from './utils/utils';
 
 global.fetch = vi.fn() as Mock;
-
-function createFetchResponse(data: IRequestResult | IProduct) {
-  return { json: () => new Promise((resolve) => resolve(data)) };
-}
 
 test('the component updates URL query parameter when page changes', async () => {
   (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));

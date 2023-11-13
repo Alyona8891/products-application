@@ -3,15 +3,15 @@ import { AppContext } from '../components/AppContext/AppContext';
 import { beforeEach, expect, test, describe, Mock, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { Details } from '../components/Details/Details';
-import { mockContext, mockProduct, mockRequestResult } from './mockData';
-import { IProduct, IRequestResult } from '../types/types';
+import {
+  mockContext,
+  mockProduct,
+  mockRequestResult,
+} from './mockData/mockData';
 import { App } from '../components/App/App';
+import { createFetchResponse } from './utils/utils';
 
 global.fetch = vi.fn() as Mock;
-
-function createFetchResponse(data: IRequestResult | IProduct) {
-  return { json: () => new Promise((resolve) => resolve(data)) };
-}
 
 describe('testing Details.tsx', () => {
   beforeEach((): void => {

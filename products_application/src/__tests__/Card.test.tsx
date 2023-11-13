@@ -8,14 +8,10 @@ import {
 import { expect, test, describe, vi, beforeEach, Mock } from 'vitest';
 import { Card } from '../components/Pages/MainPage/components/Card/Card';
 import { App } from '../components/App/App';
-import { IRequestResult } from '../types/types';
-import { mockProduct, mockRequestResult } from './mockData';
+import { mockProduct, mockRequestResult } from './mockData/mockData';
+import { createFetchResponse } from './utils/utils';
 
 global.fetch = vi.fn() as Mock;
-
-function createFetchResponse(data: IRequestResult) {
-  return { json: () => new Promise((resolve) => resolve(data)) };
-}
 
 describe('testing Card.tsx', () => {
   beforeEach((): void => {
