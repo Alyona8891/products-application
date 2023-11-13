@@ -1,5 +1,4 @@
-import { IProduct } from '../types/types';
-import { IRequestResult } from '../types/types';
+import { IProduct, IRequestResult } from '../types/types';
 
 export async function getProducts(
   keyword: string,

@@ -3,21 +3,17 @@ import { Pagination } from '../Pagination/Pagination';
 import styles from './PaginationSection.module.scss';
 
 export function PagintionSection(props: {
-  productCount: number;
-  productsOnPage: number;
   currentPage: number;
-  onClick: (currentPage: number) => void;
-  onInput: (keyWord: number) => void;
+  handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
-  const { productCount, productsOnPage, currentPage, onClick, onInput } = props;
+  const { currentPage, handleQueryChange } = props;
+
   return (
     <section className={styles.pagination_section}>
-      <ItemQuantityInput onInput={onInput} />
+      <ItemQuantityInput handleQueryChange={handleQueryChange} />
       <Pagination
-        productCount={productCount}
-        productsOnPage={productsOnPage}
         currentPage={currentPage}
-        onClick={onClick}
+        handleQueryChange={handleQueryChange}
       />
     </section>
   );

@@ -32,7 +32,7 @@ export function Details(): React.ReactElement {
   }, [currentCard]);
 
   return (
-    <section className={styles.details}>
+    <section className={styles.details} data-testid="details">
       <Link to={`/?page=${currentPage}`}>
         <div className={styles.shadow} onClick={handleCloseButton} />
       </Link>
@@ -42,20 +42,28 @@ export function Details(): React.ReactElement {
         </div>
       ) : openedProduct?.title ? (
         <div className={styles.container}>
-          <Link to={`/?page=${currentPage}`} className={styles.close_button}>
+          <Link
+            to={`/?page=${currentPage}`}
+            className={styles.close_button}
+            data-testid="closeButton"
+          >
             +
           </Link>
           <img
             className={styles.image}
             src={openedProduct.images[0]}
-            alt="card image"
+            alt="detail image"
           />
           <h3 className={styles.title}>{openedProduct.title}</h3>
           <p className={styles.text}>{openedProduct.description}</p>
         </div>
       ) : (
         <div className={styles.container}>
-          <Link to={`/?page=${currentPage}`} className={styles.close_button}>
+          <Link
+            to={`/?page=${currentPage}`}
+            className={styles.close_button}
+            data-testid="closeButton"
+          >
             +
           </Link>
           <p className={styles.message}>

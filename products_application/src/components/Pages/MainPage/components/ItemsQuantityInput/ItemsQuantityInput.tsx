@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './ItemsQuantityInput.module.scss';
-import { DEFAULT_ITEMS_QUANTITY } from '../../../../../constants/constants';
+import {
+  DEFAULT_CURRENT_PAGE,
+  DEFAULT_ITEMS_QUANTITY,
+} from '../../../../../constants/constants';
+import { AppContext } from '../../../../AppContext/AppContext';
+import { getKeyWord } from '../../../../../utils/getKeyWord';
 
 export function ItemQuantityInput(props: {
-  onInput: (keyWord: number) => void;
+  handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
-  const { onInput } = props;
+  const { handleQueryChange } = props;
 
   const [inputValue, setInputValue] = useState<number | string>(
     DEFAULT_ITEMS_QUANTITY
   );
+
+  const context = useContext(AppContext);
+  const { setIsLoadingProducts, setProductsOnPage, getProductsData } = context;
+
+  const handleItemsQuantityInput = (quantity: number): void => {
+    setIsLoadingProducts(true);
+    setProductsOnPage(quantity);
+    handleQueryChange('page', DEFAULT_CURRENT_PAGE);
+    const keyWord = getKeyWord();
+    getProductsData(keyWord, DEFAULT_CURRENT_PAGE, quantity);
+  };
 
   return (
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
@@ -26,11 +42,11 @@ export function ItemQuantityInput(props: {
           const target = +e.target.value;
           if (target > 0) {
             setInputValue(+e.target.value);
-            onInput(+e.target.value);
+            handleItemsQuantityInput(+e.target.value);
           }
           if (target === 0) {
             setInputValue('');
-            onInput(DEFAULT_ITEMS_QUANTITY);
+            handleItemsQuantityInput(DEFAULT_ITEMS_QUANTITY);
           }
           e.target.disabled = false;
         }}
