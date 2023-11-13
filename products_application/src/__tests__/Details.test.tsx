@@ -1,68 +1,66 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AppContext } from '../components/AppContext/AppContext';
-import { afterEach, expect, test } from 'vitest';
+import { beforeEach, expect, test, describe, Mock, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { Details } from '../components/Details/Details';
+import { mockContext, mockProduct, mockRequestResult } from './mockData';
+import { IProduct, IRequestResult } from '../types/types';
+import { App } from '../components/App/App';
 
-afterEach(() => cleanup());
+global.fetch = vi.fn() as Mock;
 
-test('displays a loading indicator is displayed while fetching data', async () => {
-  const mockContext = {
-    productsData: {
-      products: [
-        {
-          id: 1,
-          title: 'ijivjri',
-          text: 'okcovo',
-          images: ['ofo'],
-          description: 'okcovo',
-        },
-        {
-          id: 2,
-          title: 'efe',
-          text: 'efef',
-          images: ['efefe'],
-          description: 'efefe',
-        },
-        {
-          id: 3,
-          title: 'efe',
-          text: 'efef',
-          images: ['efefe'],
-          description: 'efefe',
-        },
-      ],
-      total: 1,
-    },
-    isLoadingProducts: false,
-    isLoadingPagination: false,
-    getProductsData: () => {},
-    setIsLoadingProducts: () => {},
-    inputValue: '',
-    setInputValue: () => {},
-    quantityProductsOnPage: 10,
-    setProductsOnPage: () => {},
-  };
-  render(
-    <AppContext.Provider value={mockContext}>
-      <MemoryRouter>
-        <Details />
-      </MemoryRouter>
-    </AppContext.Provider>
-  );
-  await screen.findByText('Loading');
-  const elements = screen.getByText('Loading');
-  expect(elements).toBeInTheDocument();
-});
+function createFetchResponse(data: IRequestResult | IProduct) {
+  return { json: () => new Promise((resolve) => resolve(data)) };
+}
 
-/*test('detailed card component displays the correct product information', async () => {
-  render(<App />);
-  await waitFor(() => {
-    const card = screen.getAllByTestId('card')[0];
-    fireEvent.click(card);
-    expect(location.search).toBe('?page=1&details=1');
-    const details = screen.findByTestId('details');
-    expect(details).toMatchSnapshot();
-    expect(screen.getByTestId('details')).toBeInTheDocument();
+describe('testing Details.tsx', () => {
+  beforeEach((): void => {
+    cleanup();
+    (fetch as Mock).mockReset();
   });
-});*/
+
+  test('displays a loading indicator is displayed while fetching data', async () => {
+    render(
+      <AppContext.Provider value={mockContext}>
+        <MemoryRouter>
+          <Details />
+        </MemoryRouter>
+      </AppContext.Provider>
+    );
+    await screen.findByText('Loading');
+    const elements = screen.getByText('Loading');
+    expect(elements).toBeInTheDocument();
+  });
+
+  test('detailed card component displays the correct product information', async () => {
+    (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
+    render(<App />);
+
+    const cards = await screen.findAllByTestId('card');
+    const card = cards[0];
+    expect(screen.queryByTestId('details')).not.toBeInTheDocument();
+    (fetch as Mock).mockResolvedValue(createFetchResponse(mockProduct));
+    fireEvent.click(card);
+    await screen.findByTestId('details');
+    expect(screen.getByTestId('details')).toBeInTheDocument();
+    const title = await screen.findByText('dress');
+    expect(title).toBeInTheDocument();
+    const description = await screen.findByText('for Woman');
+    expect(description).toBeInTheDocument();
+  });
+
+  test('clicking the close button hides the component', async () => {
+    (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
+    render(<App />);
+
+    const cards = await screen.findAllByTestId('card');
+    const card = cards[0];
+    (fetch as Mock).mockResolvedValue(createFetchResponse(mockProduct));
+    fireEvent.click(card);
+    await screen.findByTestId('details');
+    expect(screen.getByTestId('details')).toBeInTheDocument();
+    const closeButton = screen.getByTestId('closeButton');
+    fireEvent.click(closeButton);
+    expect(screen.queryByTestId('details')).not.toBeInTheDocument();
+  });
+});

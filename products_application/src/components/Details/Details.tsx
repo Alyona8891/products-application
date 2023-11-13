@@ -42,7 +42,11 @@ export function Details(): React.ReactElement {
         </div>
       ) : openedProduct?.title ? (
         <div className={styles.container}>
-          <Link to={`/?page=${currentPage}`} className={styles.close_button}>
+          <Link
+            to={`/?page=${currentPage}`}
+            className={styles.close_button}
+            data-testid="closeButton"
+          >
             +
           </Link>
           <img
@@ -55,7 +59,11 @@ export function Details(): React.ReactElement {
         </div>
       ) : (
         <div className={styles.container}>
-          <Link to={`/?page=${currentPage}`} className={styles.close_button}>
+          <Link
+            to={`/?page=${currentPage}`}
+            className={styles.close_button}
+            data-testid="closeButton"
+          >
             +
           </Link>
           <p className={styles.message}>

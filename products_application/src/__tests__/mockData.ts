@@ -5,7 +5,8 @@ export const mockRequestResult = {
       id: 1,
       title: 'iPhone 9',
       text: '',
-      description: 'An apple mobile which is nothing like apple',
+      description:
+        'An apple mobile which is nothing like apple Loremdcccccccccccccccccccccccccccccccccccc',
       images: ['https://i.dummyjson.com/data/products/1/1.jpg'],
     },
     {
@@ -31,4 +32,55 @@ export const mockProduct = {
   text: 'for Woman',
   images: ['for Woman'],
   description: 'for Woman',
+};
+
+export const mockEmptyProductsData = { products: [], total: 0 };
+
+export const mockEmptyContext = {
+  productsData: mockEmptyProductsData,
+  isLoadingProducts: false,
+  isLoadingPagination: false,
+  getProductsData: () => {},
+  setIsLoadingProducts: () => {},
+  inputValue: '',
+  setInputValue: () => {},
+  quantityProductsOnPage: 10,
+  setProductsOnPage: () => {},
+};
+
+export const mockContext = {
+  productsData: {
+    products: [
+      {
+        id: 1,
+        title: 'ijivjri',
+        text: 'okcovo',
+        images: ['ofo'],
+        description: 'okcovo',
+      },
+      {
+        id: 2,
+        title: 'efe',
+        text: 'efef',
+        images: ['efefe'],
+        description: 'efefe',
+      },
+      {
+        id: 3,
+        title: 'efe',
+        text: 'efef',
+        images: ['efefe'],
+        description: 'efefe',
+      },
+    ],
+    total: 1,
+  },
+  isLoadingProducts: false,
+  isLoadingPagination: false,
+  getProductsData: () => {},
+  setIsLoadingProducts: () => {},
+  inputValue: '',
+  setInputValue: () => {},
+  quantityProductsOnPage: 10,
+  setProductsOnPage: () => {},
 };
