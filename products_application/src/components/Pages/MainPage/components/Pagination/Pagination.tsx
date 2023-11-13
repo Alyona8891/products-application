@@ -32,6 +32,7 @@ export function Pagination(props: {
         className={styles.button}
         disabled={currentPage === 1}
         onClick={(): void => handlePaginationButton(currentPage - 1)}
+        data-testid="prevPage"
       >
         -
       </button>
@@ -59,6 +60,7 @@ export function Pagination(props: {
           getPagesArr(productCount, quantityProductsOnPage).length
         }
         onClick={(): void => handlePaginationButton(currentPage + 1)}
+        data-testid="nextPage"
       >
         +
       </button>

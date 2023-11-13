@@ -1,5 +1,5 @@
 export const mockRequestResult = {
-  total: 3,
+  total: 200,
   products: [
     {
       id: 1,
