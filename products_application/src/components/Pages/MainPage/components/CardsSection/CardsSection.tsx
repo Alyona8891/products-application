@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 import { IProduct } from '../../../../../types/types';
 import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
-import { useContext } from 'react';
-import { AppContext } from '../../../../AppContext/AppContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
 
 export function CardsSection(props: {
   currentPage: number;
 }): React.ReactElement {
   const { currentPage } = props;
-  const context = useContext(AppContext);
-  const { productsData } = context;
-  const { products } = productsData;
+  const products = useSelector((state: RootState) => state.products.products);
+
   return (
     <section className={styles.cards_section}>
       {products.length > 0 ? (
