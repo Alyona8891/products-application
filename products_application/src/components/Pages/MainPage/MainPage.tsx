@@ -21,7 +21,7 @@ export function MainPage(): React.ReactElement {
     (state: RootState) => state.products.productsOnPage
   );
 
-  const { isFetching, error } = useFetchProductsQuery({
+  const { data, isFetching, error } = useFetchProductsQuery({
     currentPage,
     productsOnPage,
   });
@@ -57,7 +57,11 @@ export function MainPage(): React.ReactElement {
               handleQueryChange={handleQueryChange}
             />
           )}
-          {isFetching ? <Loader /> : <CardsSection currentPage={currentPage} />}
+          {isFetching ? (
+            <Loader />
+          ) : (
+            <CardsSection currentPage={currentPage} data={data} />
+          )}
           <Outlet />
         </div>
       </main>

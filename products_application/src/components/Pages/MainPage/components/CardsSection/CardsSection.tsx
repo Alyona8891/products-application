@@ -1,14 +1,8 @@
 import { Link } from 'react-router-dom';
-import { IProduct } from '../../../../../types/types';
+import { IProduct, IRequestResult } from '../../../../../types/types';
 import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
-import { useSelector } from 'react-redux';
-import {
-  AppDispatch,
-  RootState,
-  useAppDispatch,
-} from '../../../../store/store';
-import { useFetchProductsQuery } from '../../../../store/utils/api';
+import { AppDispatch, useAppDispatch } from '../../../../store/store';
 import { useEffect } from 'react';
 import {
   setProducts,
@@ -17,16 +11,10 @@ import {
 
 export function CardsSection(props: {
   currentPage: number;
+  data: IRequestResult;
 }): React.ReactElement {
-  const { currentPage } = props;
+  const { currentPage, data } = props;
   const dispatch: AppDispatch = useAppDispatch();
-  const productsOnPage = useSelector(
-    (state: RootState) => state.products.productsOnPage
-  );
-  const { data } = useFetchProductsQuery({
-    currentPage,
-    productsOnPage,
-  });
 
   useEffect(() => {
     dispatch(setProducts(data.products));
