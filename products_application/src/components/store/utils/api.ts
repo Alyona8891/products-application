@@ -17,9 +17,8 @@ export const api = createApi({
         `search?q=${getKeyWord()}&limit=${params.productsOnPage}&skip=${
           (params.currentPage - 1) * params.productsOnPage
         }`,
-      async onQueryStarted(id, { dispatch /*, queryFulfilled */ }) {
+      async onQueryStarted(id, { dispatch }) {
         try {
-          //const { data } = await queryFulfilled;
           dispatch(setProductsLoadingStatus('loaded'));
         } catch (err) {
           dispatch(setProductsLoadingStatus('error'));
@@ -28,9 +27,8 @@ export const api = createApi({
     }),
     fetchProduct: builder.query({
       query: (id: number) => `${id}`,
-      async onQueryStarted(id, { dispatch /*, queryFulfilled */ }) {
+      async onQueryStarted(id, { dispatch }) {
         try {
-          //const { data } = await queryFulfilled;
           dispatch(setProductLoadingStatus('loaded'));
         } catch (err) {
           dispatch(setProductLoadingStatus('error'));
