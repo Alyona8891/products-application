@@ -1,19 +1,20 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IParams } from '../types/types';
+import { getKeyWord } from '../../../utils/getKeyWord';
 
-export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
-  async (params: IParams, thunkAPI) => {
-    const { keyword, currentPage, productsOnPage } = params;
-    const skipCount = (currentPage - 1) * productsOnPage;
-    try {
-      const res = await fetch(
-        `https://dummyjson.com/products/search?q=${keyword}&limit=${productsOnPage}&skip=${skipCount}`
-      );
-      const json = await res.json();
-      return json;
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Failed to fetch products');
-    }
-  }
-);
+export const api = createApi({
+  reducerPath: 'api',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://dummyjson.com/products',
+  }),
+  endpoints: (builder) => ({
+    fetchProducts: builder.query({
+      query: (params: IParams) =>
+        `search?q=${getKeyWord()}&limit=${params.productsOnPage}&skip=${
+          (params.currentPage - 1) * params.productsOnPage
+        }`,
+    }),
+  }),
+});
+
+export const { useFetchProductsQuery } = api;

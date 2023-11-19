@@ -1,20 +1,14 @@
 import { getPagesArr } from '../../../../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
-import { getKeyWord } from '../../../../../utils/getKeyWord';
 import { useSelector } from 'react-redux';
-import {
-  AppDispatch,
-  RootState,
-  useAppDispatch,
-} from '../../../../store/store';
-import { fetchProducts } from '../../../../store/utils/api';
+import { RootState } from '../../../../store/store';
+import { useFetchProductsQuery } from '../../../../store/utils/api';
 
 export function Pagination(props: {
   currentPage: number;
   handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
   const { currentPage, handleQueryChange } = props;
-  const dispatch: AppDispatch = useAppDispatch();
   const totalQuantity = useSelector(
     (state: RootState) => state.products.totalQuantity
   );
@@ -23,16 +17,14 @@ export function Pagination(props: {
     (state: RootState) => state.products.productsOnPage
   );
 
+  const { refetch } = useFetchProductsQuery({
+    currentPage,
+    productsOnPage,
+  });
+
   const handlePaginationButton = (currentPage: number): void => {
     handleQueryChange('page', currentPage);
-    const keyWord = getKeyWord();
-    dispatch(
-      fetchProducts({
-        keyword: keyWord,
-        currentPage: currentPage,
-        productsOnPage: productsOnPage,
-      })
-    );
+    refetch();
   };
 
   return (

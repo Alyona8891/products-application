@@ -3,7 +3,6 @@ import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../../../constants/constants';
-import { getKeyWord } from '../../../../../utils/getKeyWord';
 import {
   AppDispatch,
   RootState,
@@ -11,7 +10,7 @@ import {
 } from '../../../../store/store';
 import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
 import { useSelector } from 'react-redux';
-import { fetchProducts } from '../../../../store/utils/api';
+import { useFetchProductsQuery } from '../../../../store/utils/api';
 
 export function ItemQuantityInput(props: {
   handleQueryChange: (param: string, value: number) => void;
@@ -24,17 +23,15 @@ export function ItemQuantityInput(props: {
 
   const dispatch: AppDispatch = useAppDispatch();
 
+  const { refetch } = useFetchProductsQuery({
+    currentPage: DEFAULT_CURRENT_PAGE,
+    productsOnPage,
+  });
+
   const handleItemsQuantityInput = (quantity: number): void => {
     dispatch(setProductsOnPage(quantity));
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    const keyword = getKeyWord();
-    dispatch(
-      fetchProducts({
-        keyword,
-        currentPage: DEFAULT_CURRENT_PAGE,
-        productsOnPage: quantity,
-      })
-    );
+    refetch();
   };
 
   return (

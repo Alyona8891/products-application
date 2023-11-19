@@ -10,7 +10,7 @@ import {
   useAppDispatch,
 } from '../../../../store/store';
 import { useSelector } from 'react-redux';
-import { fetchProducts } from '../../../../store/utils/api';
+import { useFetchProductsQuery } from '../../../../store/utils/api';
 
 export function SearchBlock(props: {
   handleQueryChange: (param: string, value: number) => void;
@@ -24,6 +24,11 @@ export function SearchBlock(props: {
     (state: RootState) => state.products.productsOnPage
   );
 
+  const { refetch } = useFetchProductsQuery({
+    currentPage: DEFAULT_CURRENT_PAGE,
+    productsOnPage: productsOnPage,
+  });
+
   useEffect(() => {
     dispatch(setSearchValue(getKeyWord()));
   }, [dispatch]);
@@ -32,13 +37,7 @@ export function SearchBlock(props: {
     e.preventDefault();
     setLocalStorageData(inputValue);
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    dispatch(
-      fetchProducts({
-        keyword: inputValue,
-        currentPage: DEFAULT_CURRENT_PAGE,
-        productsOnPage: productsOnPage,
-      })
-    );
+    refetch();
   };
 
   return (
