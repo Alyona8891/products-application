@@ -1,14 +1,15 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { expect, test, Mock, vi } from 'vitest';
-import { mockRequestResult } from './mockData/mockData';
+import { fireEvent, screen } from '@testing-library/react';
+import { beforeAll, afterEach, afterAll, expect, test } from 'vitest';
 import { App } from '../components/App/App';
-import { createFetchResponse } from './utils/utils';
+import { renderWithProviders } from './utils/utils';
+import { server } from './mockData/handlers';
 
-global.fetch = vi.fn() as Mock;
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 test('the component updates URL query parameter when page changes', async () => {
-  (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
-  render(<App />);
+  renderWithProviders(<App />);
 
   const nextPage = await screen.findByTestId('nextPage');
   fireEvent.click(nextPage);

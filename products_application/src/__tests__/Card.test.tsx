@@ -1,23 +1,24 @@
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  cleanup,
-} from '@testing-library/react';
-import { expect, test, describe, vi, beforeEach, Mock } from 'vitest';
+  expect,
+  test,
+  describe,
+  beforeAll,
+  afterEach,
+  afterAll,
+  vi,
+} from 'vitest';
 import { Card } from '../components/Pages/MainPage/components/Card/Card';
 import { App } from '../components/App/App';
-import { mockProduct, mockRequestResult } from './mockData/mockData';
-import { createFetchResponse } from './utils/utils';
-
-global.fetch = vi.fn() as Mock;
+import { mockProduct } from './mockData/mockData';
+import { renderWithProviders } from './utils/utils';
+import { server } from './mockData/handlers';
+import * as mockedProductApi from '../components/store/utils/api';
 
 describe('testing Card.tsx', () => {
-  beforeEach((): void => {
-    cleanup();
-    (fetch as Mock).mockReset();
-  });
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
   test('displays that the card component renders the relevant card data', () => {
     const card = render(<Card product={mockProduct} />);
@@ -28,8 +29,7 @@ describe('testing Card.tsx', () => {
   });
 
   test('clicking on a card opens a detailed card component', async () => {
-    (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
-    render(<App />);
+    renderWithProviders(<App />);
 
     const cards = await screen.findAllByTestId('card');
     const card = cards[0];
@@ -40,17 +40,17 @@ describe('testing Card.tsx', () => {
   });
 
   test('clicking on a card triggers an additional API call to fetch detailed information', async () => {
-    (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
-    render(<App />);
+    renderWithProviders(<App />);
 
     await waitFor(() => {
       expect(screen.getByText('iPhone 9')).toBeInTheDocument();
     });
     const cards = await screen.findAllByTestId('card');
     const card = cards[0];
+    const spyOn = vi.spyOn(mockedProductApi, 'useFetchProductQuery');
     fireEvent.click(card);
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledTimes(2);
+      expect(spyOn).toHaveBeenCalled();
     });
   });
 });

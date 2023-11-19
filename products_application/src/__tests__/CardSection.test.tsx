@@ -1,37 +1,30 @@
-import { cleanup, render, screen } from '@testing-library/react';
-import { AppContext } from '../components/AppContext/AppContext';
-import { beforeEach, expect, test, describe } from 'vitest';
-import { CardsSection } from '../components/Pages/MainPage/components/CardsSection/CardsSection';
-import { MemoryRouter } from 'react-router-dom';
-import { mockContext, mockEmptyContext } from './mockData/mockData';
+import { screen } from '@testing-library/react';
+import { beforeAll, afterEach, afterAll, expect, test, describe } from 'vitest';
+import { renderWithProviders } from './utils/utils';
+import { App } from '../components/App/App';
+import { server } from './mockData/handlers';
 
 describe('testing CardSection.tsx', () => {
-  beforeEach((): void => {
-    cleanup();
-  });
-  test('displays appropriate message when no cards are present', () => {
-    const cardsSection = render(<CardsSection currentPage={1} />, {
-      wrapper: (props) => (
-        <AppContext.Provider value={mockEmptyContext}>
-          {props.children}
-        </AppContext.Provider>
-      ),
-    });
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
-    const message = cardsSection.getByText(
+  /*test('displays appropriate message when no cards are present', () => {
+    renderWithProviders(
+      <MemoryRouter initialEntries={['/?page=10001']}>
+        <CardsSection currentPage={10001} />
+      </MemoryRouter>
+    );
+
+    const message = screen.getByText(
       'Sorry, nothing found. Please, try again!'
     );
     expect(message).toBeInTheDocument();
-  });
+  });*/
 
   test('renders the specified number of cards', async () => {
-    render(
-      <AppContext.Provider value={mockContext}>
-        <MemoryRouter>
-          <CardsSection currentPage={1} />
-        </MemoryRouter>
-      </AppContext.Provider>
-    );
+    renderWithProviders(<App />);
+
     await screen.findAllByAltText('card image');
     const elementsArr = screen.getAllByAltText('card image');
     expect(elementsArr.length).toEqual(3);

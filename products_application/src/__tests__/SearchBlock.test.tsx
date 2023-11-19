@@ -1,20 +1,16 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, expect, test, describe, Mock, vi } from 'vitest';
-import { mockRequestResult } from './mockData/mockData';
+import { fireEvent, screen } from '@testing-library/react';
+import { beforeAll, afterEach, afterAll, expect, test, describe } from 'vitest';
 import { App } from '../components/App/App';
-import { createFetchResponse } from './utils/utils';
-
-global.fetch = vi.fn() as Mock;
+import { server } from './mockData/handlers';
+import { renderWithProviders } from './utils/utils';
 
 describe('testing SearchBlock.tsx', () => {
-  beforeEach((): void => {
-    cleanup();
-    (fetch as Mock).mockReset();
-  });
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
   test('clicking the Search button saves the entered value to the local storage', async () => {
-    (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
-    render(<App />);
+    renderWithProviders(<App />);
 
     const searchInput = await screen.findByTestId('searchInput');
     fireEvent.change(searchInput, { target: { value: 'men' } });
@@ -24,8 +20,7 @@ describe('testing SearchBlock.tsx', () => {
   });
 
   test('the component retrieves the value from the local storage upon mounting', async () => {
-    (fetch as Mock).mockResolvedValue(createFetchResponse(mockRequestResult));
-    render(<App />);
+    renderWithProviders(<App />);
 
     const searchInput = await screen.findByTestId('searchInput');
     fireEvent.change(searchInput, { target: { value: 'women' } });
@@ -33,7 +28,7 @@ describe('testing SearchBlock.tsx', () => {
     fireEvent.click(searchButton);
     expect(localStorage.getItem('alyona8891_keyword')).to.equal('women');
 
-    render(<App />);
+    renderWithProviders(<App />);
     expect(searchInput).toHaveDisplayValue('women');
   });
 });

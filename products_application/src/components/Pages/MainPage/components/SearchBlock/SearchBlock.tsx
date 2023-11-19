@@ -37,6 +37,7 @@ export function SearchBlock(props: {
     e.preventDefault();
     setLocalStorageData(inputValue);
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
+    dispatch(setSearchValue(inputValue));
     refetch();
   };
 
