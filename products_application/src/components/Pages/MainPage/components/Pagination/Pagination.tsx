@@ -1,28 +1,30 @@
-import { useContext } from 'react';
 import { getPagesArr } from '../../../../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
-import { AppContext } from '../../../../AppContext/AppContext';
-import { getKeyWord } from '../../../../../utils/getKeyWord';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
+import { useFetchProductsQuery } from '../../../../store/utils/api';
 
 export function Pagination(props: {
   currentPage: number;
   handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
   const { currentPage, handleQueryChange } = props;
-  const context = useContext(AppContext);
-  const {
-    productsData,
-    getProductsData,
-    setIsLoadingProducts,
-    quantityProductsOnPage,
-  } = context;
-  const productCount = productsData.total;
+  const totalQuantity = useSelector(
+    (state: RootState) => state.products.totalQuantity
+  );
+
+  const productsOnPage = useSelector(
+    (state: RootState) => state.products.productsOnPage
+  );
+
+  const { refetch } = useFetchProductsQuery({
+    currentPage,
+    productsOnPage,
+  });
 
   const handlePaginationButton = (currentPage: number): void => {
-    setIsLoadingProducts(true);
     handleQueryChange('page', currentPage);
-    const keyWord = getKeyWord();
-    getProductsData(keyWord, currentPage, quantityProductsOnPage);
+    refetch();
   };
 
   return (
@@ -36,7 +38,7 @@ export function Pagination(props: {
       >
         -
       </button>
-      {getPagesArr(productCount, quantityProductsOnPage).map((page) => {
+      {getPagesArr(totalQuantity, productsOnPage).map((page) => {
         return (
           <button
             key={page}
@@ -56,8 +58,7 @@ export function Pagination(props: {
         type="button"
         className={styles.button}
         disabled={
-          currentPage ===
-          getPagesArr(productCount, quantityProductsOnPage).length
+          currentPage === getPagesArr(totalQuantity, productsOnPage).length
         }
         onClick={(): void => handlePaginationButton(currentPage + 1)}
         data-testid="nextPage"

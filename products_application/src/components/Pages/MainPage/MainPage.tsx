@@ -1,14 +1,13 @@
-import { useContext, useEffect } from 'react';
 import { Loader } from '../../Loader/Loader';
 import styles from './MainPage.module.scss';
 import { SearchSection } from './components/SearchSection/SearchSection';
 import { CardsSection } from './components/CardsSection/CardsSection';
-
-import { getKeyWord } from '../../../utils/getKeyWord';
 import { PagintionSection } from './components/PaginationSection/PaginationSection';
 import { DEFAULT_CURRENT_PAGE } from '../../../constants/constants';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { AppContext } from '../../AppContext/AppContext';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { useFetchProductsQuery } from '../../store/utils/api';
 
 export function MainPage(): React.ReactElement {
   const location = useLocation();
@@ -18,23 +17,27 @@ export function MainPage(): React.ReactElement {
     Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
   const currentCard = Number(queryParameters.get('details')) || null;
 
-  const context = useContext(AppContext);
-  const {
-    isLoadingProducts,
-    isLoadingPagination,
-    getProductsData,
-    quantityProductsOnPage,
-  } = context;
+  const productsOnPage = useSelector(
+    (state: RootState) => state.products.productsOnPage
+  );
 
-  useEffect(() => {
-    const keyWord = getKeyWord();
-    getProductsData(keyWord, currentPage, quantityProductsOnPage);
-  }, [currentPage, getProductsData, quantityProductsOnPage]);
+  const { data, isFetching, error } = useFetchProductsQuery({
+    currentPage,
+    productsOnPage,
+  });
 
   const handleQueryChange = (param: string, value: number) => {
     queryParameters.set(`${param}`, value.toString());
     navigate({ search: queryParameters.toString() });
   };
+
+  if (error) {
+    return (
+      <h3 className={styles.message}>
+        Something went wrong. Please, try later!
+      </h3>
+    );
+  }
 
   return (
     <>
@@ -48,16 +51,16 @@ export function MainPage(): React.ReactElement {
           }
         >
           <SearchSection handleQueryChange={handleQueryChange} />
-          {!isLoadingPagination && (
+          {!isFetching && (
             <PagintionSection
               currentPage={currentPage}
               handleQueryChange={handleQueryChange}
             />
           )}
-          {isLoadingProducts ? (
+          {isFetching ? (
             <Loader />
           ) : (
-            <CardsSection currentPage={currentPage} />
+            <CardsSection currentPage={currentPage} data={data} />
           )}
           <Outlet />
         </div>

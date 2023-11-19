@@ -33,3 +33,16 @@
         margin: 0 25% 0 5%;
     }
   }
+
+
+.message {
+    position: absolute;
+    width: 100%;
+    top: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: monospace;
+}

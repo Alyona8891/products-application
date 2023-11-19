@@ -1,21 +1,30 @@
 import { Link } from 'react-router-dom';
-import { IProduct } from '../../../../../types/types';
+import { IProduct, IRequestResult } from '../../../../../types/types';
 import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
-import { useContext } from 'react';
-import { AppContext } from '../../../../AppContext/AppContext';
+import { AppDispatch, useAppDispatch } from '../../../../store/store';
+import { useEffect } from 'react';
+import {
+  setProducts,
+  setTotalQuantity,
+} from '../../../../store/reducers/productsReducer';
 
 export function CardsSection(props: {
   currentPage: number;
+  data: IRequestResult;
 }): React.ReactElement {
-  const { currentPage } = props;
-  const context = useContext(AppContext);
-  const { productsData } = context;
-  const { products } = productsData;
+  const { currentPage, data } = props;
+  const dispatch: AppDispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setProducts(data.products));
+    dispatch(setTotalQuantity(data.total));
+  }, [data.products, data.total, dispatch]);
+
   return (
     <section className={styles.cards_section}>
-      {products.length > 0 ? (
-        products.map((product: IProduct) => {
+      {data.products.length > 0 ? (
+        data.products.map((product: IProduct) => {
           return (
             <Link
               to={`details/?page=${currentPage}&details=${product.id}`}

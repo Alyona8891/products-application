@@ -1,27 +1,44 @@
-import { FormEvent, useContext, useEffect } from 'react';
+import { FormEvent, useEffect } from 'react';
 import styles from './SearchBlock.module.scss';
 import { setLocalStorageData } from '../../../../../utils/setLocalStorageData';
 import { getKeyWord } from '../../../../../utils/getKeyWord';
-import { AppContext } from '../../../../AppContext/AppContext';
 import { DEFAULT_CURRENT_PAGE } from '../../../../../constants/constants';
+import { setSearchValue } from '../../../../store/reducers/productsReducer';
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+} from '../../../../store/store';
+import { useSelector } from 'react-redux';
+import { useFetchProductsQuery } from '../../../../store/utils/api';
 
 export function SearchBlock(props: {
   handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
   const { handleQueryChange } = props;
-  const context = useContext(AppContext);
-  const { inputValue, setInputValue, quantityProductsOnPage, getProductsData } =
-    context;
+  const dispatch: AppDispatch = useAppDispatch();
+  const inputValue = useSelector(
+    (state: RootState) => state.products.searchValue
+  );
+  const productsOnPage = useSelector(
+    (state: RootState) => state.products.productsOnPage
+  );
+
+  const { refetch } = useFetchProductsQuery({
+    currentPage: DEFAULT_CURRENT_PAGE,
+    productsOnPage: productsOnPage,
+  });
 
   useEffect(() => {
-    setInputValue(getKeyWord());
-  }, [setInputValue]);
+    dispatch(setSearchValue(getKeyWord()));
+  }, [dispatch]);
 
   const handleSearchButton = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     setLocalStorageData(inputValue);
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    getProductsData(inputValue, DEFAULT_CURRENT_PAGE, quantityProductsOnPage);
+    dispatch(setSearchValue(inputValue));
+    refetch();
   };
 
   return (
@@ -34,7 +51,7 @@ export function SearchBlock(props: {
         className={styles.input}
         id="search_input"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => dispatch(setSearchValue(e.target.value))}
         data-testid="searchInput"
       />
       <button

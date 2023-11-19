@@ -1,30 +1,37 @@
-import { useContext, useState } from 'react';
 import styles from './ItemsQuantityInput.module.scss';
 import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../../../constants/constants';
-import { AppContext } from '../../../../AppContext/AppContext';
-import { getKeyWord } from '../../../../../utils/getKeyWord';
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+} from '../../../../store/store';
+import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
+import { useSelector } from 'react-redux';
+import { useFetchProductsQuery } from '../../../../store/utils/api';
 
 export function ItemQuantityInput(props: {
   handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
   const { handleQueryChange } = props;
 
-  const [inputValue, setInputValue] = useState<number | string>(
-    DEFAULT_ITEMS_QUANTITY
+  const productsOnPage = useSelector(
+    (state: RootState) => state.products.productsOnPage
   );
 
-  const context = useContext(AppContext);
-  const { setIsLoadingProducts, setProductsOnPage, getProductsData } = context;
+  const dispatch: AppDispatch = useAppDispatch();
+
+  const { refetch } = useFetchProductsQuery({
+    currentPage: DEFAULT_CURRENT_PAGE,
+    productsOnPage,
+  });
 
   const handleItemsQuantityInput = (quantity: number): void => {
-    setIsLoadingProducts(true);
-    setProductsOnPage(quantity);
+    dispatch(setProductsOnPage(quantity));
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    const keyWord = getKeyWord();
-    getProductsData(keyWord, DEFAULT_CURRENT_PAGE, quantity);
+    refetch();
   };
 
   return (
@@ -35,17 +42,15 @@ export function ItemQuantityInput(props: {
       <input
         autoComplete="off"
         className={styles.input}
-        value={inputValue}
+        value={productsOnPage}
         placeholder={DEFAULT_ITEMS_QUANTITY.toString()}
         onChange={(e) => {
           e.target.disabled = true;
           const target = +e.target.value;
           if (target > 0) {
-            setInputValue(+e.target.value);
             handleItemsQuantityInput(+e.target.value);
           }
           if (target === 0) {
-            setInputValue('');
             handleItemsQuantityInput(DEFAULT_ITEMS_QUANTITY);
           }
           e.target.disabled = false;
