@@ -4,14 +4,15 @@ import { Loader } from '../Loader/Loader';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
-import { getProduct } from '../../utils/api';
+import { useFetchProductQuery } from '../store/utils/api';
 
 export function Details(): React.ReactElement {
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
+  console.log(isLoadingProduct);
   const queryParameters = new URLSearchParams(location.search);
   const navigate = useNavigate();
   const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
-  const currentCard = Number(queryParameters.get('details')) || null;
+  const currentCard = Number(queryParameters.get('details')) || 0;
   const handleCloseButton = (): void => {
     setIsLoadingProduct(true);
     navigate({ search: queryParameters.toString() });
@@ -20,23 +21,23 @@ export function Details(): React.ReactElement {
   const currentPage =
     Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
 
+  const { data, isFetching } = useFetchProductQuery(currentCard);
+
   useEffect(() => {
-    if (currentCard) {
-      getProduct(currentCard).then((data) => {
-        if (data) {
-          setOpenedProduct({ ...data });
-        }
-        setIsLoadingProduct(false);
-      });
+    if (currentCard > 0) {
+      if (data) {
+        setOpenedProduct({ ...data });
+      }
+      setIsLoadingProduct(false);
     }
-  }, [currentCard]);
+  }, [currentCard, data]);
 
   return (
     <section className={styles.details} data-testid="details">
       <Link to={`/?page=${currentPage}`}>
         <div className={styles.shadow} onClick={handleCloseButton} />
       </Link>
-      {isLoadingProduct ? (
+      {isFetching ? (
         <div className={styles.container}>
           <Loader />
         </div>

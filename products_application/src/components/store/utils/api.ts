@@ -14,7 +14,10 @@ export const api = createApi({
           (params.currentPage - 1) * params.productsOnPage
         }`,
     }),
+    fetchProduct: builder.query({
+      query: (id: number) => `${id}`,
+    }),
   }),
 });
 
-export const { useFetchProductsQuery } = api;
+export const { useFetchProductsQuery, useFetchProductQuery } = api;
