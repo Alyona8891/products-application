@@ -15,7 +15,7 @@ export function Details(): React.ReactElement {
   const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
   const currentCard = Number(queryParameters.get('details')) || 0;
   const handleCloseButton = (): void => {
-    dispatch(setProductLoadingStatus('loding'));
+    dispatch(setProductLoadingStatus('loading'));
     navigate({ search: queryParameters.toString() });
     setOpenedProduct(null);
   };
