@@ -10,4 +10,6 @@ export interface IProductsSliceState {
   totalQuantity: number;
   productsOnPage: number;
   searchValue: string;
+  productsLoadingStatus: string;
+  productLoadingStatus: string;
 }

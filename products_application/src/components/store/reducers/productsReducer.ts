@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { initialState } from '../data/data';
+import { IProduct } from '../../../types/types';
 
 export const productsSlice = createSlice({
   name: 'productsData',
   initialState,
   reducers: {
-    setProducts: (state, action) => {
+    setProducts: (state, action: PayloadAction<IProduct[]>) => {
       state.products = action.payload;
     },
     setTotalQuantity: (state, action: PayloadAction<number>) => {
@@ -17,6 +18,12 @@ export const productsSlice = createSlice({
     setProductsOnPage: (state, action: PayloadAction<number>) => {
       state.productsOnPage = action.payload;
     },
+    setProductsLoadingStatus: (state, action: PayloadAction<string>) => {
+      state.productsLoadingStatus = action.payload;
+    },
+    setProductLoadingStatus: (state, action: PayloadAction<string>) => {
+      state.productLoadingStatus = action.payload;
+    },
   },
 });
 
@@ -25,5 +32,7 @@ export const {
   setTotalQuantity,
   setSearchValue,
   setProductsOnPage,
+  setProductsLoadingStatus,
+  setProductLoadingStatus,
 } = productsSlice.actions;
 export const productsReducer = productsSlice.reducer;

@@ -5,16 +5,17 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
 import { useFetchProductQuery } from '../store/utils/api';
+import { AppDispatch, useAppDispatch } from '../store/store';
+import { setProductLoadingStatus } from '../store/reducers/productsReducer';
 
 export function Details(): React.ReactElement {
-  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
-  console.log(isLoadingProduct);
+  const dispatch: AppDispatch = useAppDispatch();
   const queryParameters = new URLSearchParams(location.search);
   const navigate = useNavigate();
   const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
   const currentCard = Number(queryParameters.get('details')) || 0;
   const handleCloseButton = (): void => {
-    setIsLoadingProduct(true);
+    dispatch(setProductLoadingStatus('loding'));
     navigate({ search: queryParameters.toString() });
     setOpenedProduct(null);
   };
@@ -28,7 +29,6 @@ export function Details(): React.ReactElement {
       if (data) {
         setOpenedProduct({ ...data });
       }
-      setIsLoadingProduct(false);
     }
   }, [currentCard, data]);
 
