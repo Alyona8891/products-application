@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import './globals.scss';
 
 export const metadata: Metadata = {
   title: 'Products Application',
@@ -16,7 +17,6 @@ export default function RootLayout({
       </head>
       <body>
         <div id="root">{children}</div>
-        <script type="module" src="/src/main.tsx"></script>
       </body>
     </html>
   );
