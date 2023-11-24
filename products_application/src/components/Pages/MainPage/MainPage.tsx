@@ -4,18 +4,16 @@ import { SearchSection } from './components/SearchSection/SearchSection';
 import { CardsSection } from './components/CardsSection/CardsSection';
 import { PagintionSection } from './components/PaginationSection/PaginationSection';
 import { DEFAULT_CURRENT_PAGE } from '../../../constants/constants';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { useFetchProductsQuery } from '../../store/utils/api';
+import { useSearchParams } from 'next/navigation';
 
 export function MainPage(): React.ReactElement {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const queryParameters = new URLSearchParams(location.search);
-  const currentPage =
-    Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
-  const currentCard = Number(queryParameters.get('details')) || null;
+  const location = useSearchParams();
+  const currentPage = Number(location.get('page')) || DEFAULT_CURRENT_PAGE;
+  const currentCard = Number(location.get('details')) || null;
 
   const productsOnPage = useSelector(
     (state: RootState) => state.products.productsOnPage
@@ -25,11 +23,6 @@ export function MainPage(): React.ReactElement {
     currentPage,
     productsOnPage,
   });
-
-  const handleQueryChange = (param: string, value: number) => {
-    queryParameters.set(`${param}`, value.toString());
-    navigate({ search: queryParameters.toString() });
-  };
 
   if (error) {
     return (
@@ -50,13 +43,8 @@ export function MainPage(): React.ReactElement {
               : `${styles.container}`
           }
         >
-          <SearchSection handleQueryChange={handleQueryChange} />
-          {!isFetching && (
-            <PagintionSection
-              currentPage={currentPage}
-              handleQueryChange={handleQueryChange}
-            />
-          )}
+          <SearchSection />
+          {!isFetching && <PagintionSection currentPage={currentPage} />}
           {isFetching ? (
             <Loader />
           ) : (

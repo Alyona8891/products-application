@@ -2,21 +2,21 @@ import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
 import { Loader } from '../Loader/Loader';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
 import { useFetchProductQuery } from '../store/utils/api';
 import { AppDispatch, useAppDispatch } from '../store/store';
 import { setProductLoadingStatus } from '../store/reducers/productsReducer';
+import Link from 'next/link';
 
 export function Details(): React.ReactElement {
   const dispatch: AppDispatch = useAppDispatch();
   const queryParameters = new URLSearchParams(location.search);
-  const navigate = useNavigate();
+
   const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
   const currentCard = Number(queryParameters.get('details')) || 0;
   const handleCloseButton = (): void => {
     dispatch(setProductLoadingStatus('loading'));
-    navigate({ search: queryParameters.toString() });
+    //navigate({ search: queryParameters.toString() });
     setOpenedProduct(null);
   };
   const currentPage =
@@ -34,7 +34,7 @@ export function Details(): React.ReactElement {
 
   return (
     <section className={styles.details} data-testid="details">
-      <Link to={`/?page=${currentPage}`}>
+      <Link href={`/?page=${currentPage}`}>
         <div className={styles.shadow} onClick={handleCloseButton} />
       </Link>
       {isFetching ? (
@@ -44,7 +44,7 @@ export function Details(): React.ReactElement {
       ) : openedProduct?.title ? (
         <div className={styles.container}>
           <Link
-            to={`/?page=${currentPage}`}
+            href={`/?page=${currentPage}`}
             className={styles.close_button}
             data-testid="closeButton"
           >
@@ -61,7 +61,7 @@ export function Details(): React.ReactElement {
       ) : (
         <div className={styles.container}>
           <Link
-            to={`/?page=${currentPage}`}
+            href={`/?page=${currentPage}`}
             className={styles.close_button}
             data-testid="closeButton"
           >

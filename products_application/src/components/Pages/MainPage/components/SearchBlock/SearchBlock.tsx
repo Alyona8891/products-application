@@ -11,11 +11,17 @@ import {
 } from '../../../../store/store';
 import { useSelector } from 'react-redux';
 import { useFetchProductsQuery } from '../../../../store/utils/api';
+import { useSearchParams } from 'next/navigation';
 
-export function SearchBlock(props: {
-  handleQueryChange: (param: string, value: number) => void;
-}): React.ReactElement {
-  const { handleQueryChange } = props;
+export function SearchBlock(): React.ReactElement {
+  const location = useSearchParams();
+
+  const handleQueryChange = (param: string, value: number) => {
+    const params = new URLSearchParams(location);
+    params.set(param, value.toString());
+    return params.toString();
+  };
+
   const dispatch: AppDispatch = useAppDispatch();
   const inputValue = useSelector(
     (state: RootState) => state.products.searchValue

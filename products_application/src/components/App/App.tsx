@@ -1,12 +1,14 @@
-import { router } from '../router/router';
-import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
+import { MainPage } from '../Pages/MainPage/MainPage';
 
-export function App(): React.ReactElement {
+export default function App(): React.ReactElement {
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />;
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <MainPage />
+      </Provider>
+    </ErrorBoundary>
   );
 }

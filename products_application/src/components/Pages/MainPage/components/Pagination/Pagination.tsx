@@ -3,12 +3,18 @@ import styles from './Pagination.module.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import { useFetchProductsQuery } from '../../../../store/utils/api';
+import { useSearchParams } from 'next/navigation';
 
-export function Pagination(props: {
-  currentPage: number;
-  handleQueryChange: (param: string, value: number) => void;
-}): React.ReactElement {
-  const { currentPage, handleQueryChange } = props;
+export function Pagination(props: { currentPage: number }): React.ReactElement {
+  const { currentPage } = props;
+  const location = useSearchParams();
+
+  const handleQueryChange = (param: string, value: number) => {
+    const params = new URLSearchParams(location);
+    params.set(param, value.toString());
+    return params.toString();
+  };
+
   const totalQuantity = useSelector(
     (state: RootState) => state.products.totalQuantity
   );

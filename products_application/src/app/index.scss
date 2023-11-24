@@ -18,8 +18,8 @@ a {
 @font-face {
   font-family: 'Rubik';
   src:
-    url('./assets/fonts/Rubik-Regular.woff2') format('woff2'),
-    url('./assets/fonts/Rubik-Regular.woff') format('woff');
+    url('../assets/fonts/Rubik-Regular.woff2') format('woff2'),
+    url('../assets/fonts/Rubik-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -28,8 +28,8 @@ a {
 @font-face {
   font-family: 'Rubik';
   src:
-    url('./assets/fonts/Rubik-ExtraBold.woff2') format('woff2'),
-    url('./assets/fonts/Rubik-ExtraBold.woff') format('woff');
+    url('../assets/fonts/Rubik-ExtraBold.woff2') format('woff2'),
+    url('../assets/fonts/Rubik-ExtraBold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;

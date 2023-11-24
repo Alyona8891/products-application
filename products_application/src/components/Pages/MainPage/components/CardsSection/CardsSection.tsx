@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { IProduct, IRequestResult } from '../../../../../types/types';
 import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
@@ -8,6 +7,7 @@ import {
   setProducts,
   setTotalQuantity,
 } from '../../../../store/reducers/productsReducer';
+import Link from 'next/link';
 
 export function CardsSection(props: {
   currentPage: number;
@@ -27,7 +27,7 @@ export function CardsSection(props: {
         data.products.map((product: IProduct) => {
           return (
             <Link
-              to={`details/?page=${currentPage}&details=${product.id}`}
+              href={`details/?page=${currentPage}&details=${product.id}`}
               key={product.id}
             >
               <Card product={product} />;

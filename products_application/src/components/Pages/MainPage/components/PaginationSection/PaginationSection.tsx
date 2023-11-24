@@ -4,17 +4,13 @@ import styles from './PaginationSection.module.scss';
 
 export function PagintionSection(props: {
   currentPage: number;
-  handleQueryChange: (param: string, value: number) => void;
 }): React.ReactElement {
-  const { currentPage, handleQueryChange } = props;
+  const { currentPage } = props;
 
   return (
     <section className={styles.pagination_section}>
-      <ItemQuantityInput handleQueryChange={handleQueryChange} />
-      <Pagination
-        currentPage={currentPage}
-        handleQueryChange={handleQueryChange}
-      />
+      <ItemQuantityInput />
+      <Pagination currentPage={currentPage} />
     </section>
   );
 }

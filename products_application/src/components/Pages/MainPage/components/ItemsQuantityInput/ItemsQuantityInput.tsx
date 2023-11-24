@@ -11,11 +11,16 @@ import {
 import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
 import { useSelector } from 'react-redux';
 import { useFetchProductsQuery } from '../../../../store/utils/api';
+import { useSearchParams } from 'next/navigation';
 
-export function ItemQuantityInput(props: {
-  handleQueryChange: (param: string, value: number) => void;
-}): React.ReactElement {
-  const { handleQueryChange } = props;
+export function ItemQuantityInput(): React.ReactElement {
+  const location = useSearchParams();
+
+  const handleQueryChange = (param: string, value: number) => {
+    const params = new URLSearchParams(location);
+    params.set(param, value.toString());
+    return params.toString();
+  };
 
   const productsOnPage = useSelector(
     (state: RootState) => state.products.productsOnPage
