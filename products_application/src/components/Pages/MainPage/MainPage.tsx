@@ -8,12 +8,17 @@ import { Outlet } from 'react-router-dom';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { useFetchProductsQuery } from '../../store/utils/api';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export function MainPage(): React.ReactElement {
   const location = useSearchParams();
-  const currentPage = Number(location.get('page')) || DEFAULT_CURRENT_PAGE;
-  const currentCard = Number(location.get('details')) || null;
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const queryParameters = new URLSearchParams(location);
+  const currentPage =
+    Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
+  const currentCard = Number(queryParameters.get('details')) || null;
 
   const productsOnPage = useSelector(
     (state: RootState) => state.products.productsOnPage
@@ -23,6 +28,11 @@ export function MainPage(): React.ReactElement {
     currentPage,
     productsOnPage,
   });
+
+  const handleQueryChange = (param: string, value: number) => {
+    queryParameters.set(`${param}`, value.toString());
+    router.push(pathname + '?' + queryParameters);
+  };
 
   if (error) {
     return (
@@ -43,8 +53,13 @@ export function MainPage(): React.ReactElement {
               : `${styles.container}`
           }
         >
-          <SearchSection />
-          {!isFetching && <PagintionSection currentPage={currentPage} />}
+          <SearchSection handleQueryChange={handleQueryChange} />
+          {!isFetching && (
+            <PagintionSection
+              currentPage={currentPage}
+              handleQueryChange={handleQueryChange}
+            />
+          )}
           {isFetching ? (
             <Loader />
           ) : (
