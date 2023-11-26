@@ -1,47 +1,33 @@
 import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
-import { Loader } from '../Loader/Loader';
-import { useEffect, useState } from 'react';
-import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
-import { useFetchProductQuery } from '../store/utils/api';
-import { AppDispatch, useAppDispatch } from '../store/store';
-import { setProductLoadingStatus } from '../store/reducers/productsReducer';
+//import { useState } from 'react';
 import Link from 'next/link';
 
-export function Details(): React.ReactElement {
-  const dispatch: AppDispatch = useAppDispatch();
-  const queryParameters = new URLSearchParams(location.search);
+export function Details(props: { data: IProduct }): React.ReactElement {
+  const { data } = props;
 
-  const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
-  const currentCard = Number(queryParameters.get('details')) || 0;
+  //const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
+  //const currentCard = Number(queryParameters.get('details')) || 0;
   const handleCloseButton = (): void => {
-    dispatch(setProductLoadingStatus('loading'));
     //navigate({ search: queryParameters.toString() });
-    setOpenedProduct(null);
+    //setOpenedProduct(null);
   };
-  const currentPage =
-    Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
+  const currentPage = 1;
 
-  const { data, isFetching } = useFetchProductQuery(currentCard);
-
-  useEffect(() => {
+  /*useEffect(() => {
     if (currentCard > 0) {
       if (data) {
         setOpenedProduct({ ...data });
       }
     }
-  }, [currentCard, data]);
+  }, [currentCard, data]);*/
 
   return (
     <section className={styles.details} data-testid="details">
       <Link href={`/?page=${currentPage}`}>
         <div className={styles.shadow} onClick={handleCloseButton} />
       </Link>
-      {isFetching ? (
-        <div className={styles.container}>
-          <Loader />
-        </div>
-      ) : openedProduct?.title ? (
+      {data?.title ? (
         <div className={styles.container}>
           <Link
             href={`/?page=${currentPage}`}
@@ -52,11 +38,11 @@ export function Details(): React.ReactElement {
           </Link>
           <img
             className={styles.image}
-            src={openedProduct.images[0]}
+            src={data.images[0]}
             alt="detail image"
           />
-          <h3 className={styles.title}>{openedProduct.title}</h3>
-          <p className={styles.text}>{openedProduct.description}</p>
+          <h3 className={styles.title}>{data.title}</h3>
+          <p className={styles.text}>{data.description}</p>
         </div>
       ) : (
         <div className={styles.container}>

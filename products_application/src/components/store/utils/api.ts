@@ -14,7 +14,7 @@ export const api = createApi({
         }`,
     }),
     fetchProduct: builder.query({
-      query: (id: number) => `${id}`,
+      query: (id: string) => `${id}`,
     }),
   }),
 });

@@ -8,16 +8,17 @@ import {
 } from '../constants/constants';
 import { wrapper } from '../components/store/store';
 import {
+  fetchProduct,
   fetchProducts,
   getRunningQueriesThunk,
 } from '../components/store/utils/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { IResponse } from '../types/types';
+import { IProduct, IResponse } from '../types/types';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const currentPage = Number(context.query.page) || DEFAULT_CURRENT_PAGE;
-    const currentCard = context.query.details?.toString() || null;
+    const currentCard = context.query.details?.toString() || '';
     const productsOnPage =
       Number(context.query.limit) || DEFAULT_ITEMS_QUANTITY;
     const keyword = context.query.search?.toString() || '';
@@ -28,11 +29,19 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productsOnPage,
       })
     );
+    const details = await store.dispatch(fetchProduct.initiate(currentCard));
 
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
     return {
-      props: { response, currentCard, currentPage, productsOnPage, keyword },
+      props: {
+        response,
+        currentCard,
+        currentPage,
+        productsOnPage,
+        keyword,
+        details,
+      },
     };
   }
 );
@@ -43,6 +52,7 @@ interface IServerSideProps {
   currentPage: number;
   productsOnPage: number;
   keyword: string;
+  details: IProduct;
 }
 
 export default function MainPage({
@@ -50,7 +60,7 @@ export default function MainPage({
   currentCard,
   currentPage,
   productsOnPage,
-  keyword,
+  keyword, //details,
 }: IServerSideProps): React.ReactElement {
   const { data, error } = response;
   const totalQuantity = data.total;
