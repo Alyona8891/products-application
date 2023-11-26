@@ -1,6 +1,7 @@
 import { IProduct } from '../../../types/types';
 
 export interface IParams {
+  keyword: string;
   currentPage: number;
   productsOnPage: number;
 }

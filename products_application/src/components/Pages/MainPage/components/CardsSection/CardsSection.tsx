@@ -1,12 +1,6 @@
 import { IProduct, IRequestResult } from '../../../../../types/types';
 import { Card } from '../Card/Card';
 import styles from './CardsSection.module.scss';
-import { AppDispatch, useAppDispatch } from '../../../../store/store';
-import { useEffect } from 'react';
-import {
-  setProducts,
-  setTotalQuantity,
-} from '../../../../store/reducers/productsReducer';
 import Link from 'next/link';
 
 export function CardsSection(props: {
@@ -14,12 +8,6 @@ export function CardsSection(props: {
   data: IRequestResult;
 }): React.ReactElement {
   const { currentPage, data } = props;
-  const dispatch: AppDispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setProducts(data.products));
-    dispatch(setTotalQuantity(data.total));
-  }, [data.products, data.total, dispatch]);
 
   return (
     <section className={styles.cards_section}>

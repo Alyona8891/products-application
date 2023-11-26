@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { productsReducer } from './reducers/productsReducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { api } from './utils/api';
 import { createWrapper } from 'next-redux-wrapper';
+import { productsReducer } from './reducers/productsReducer';
 
 const makeStore = () =>
   configureStore({

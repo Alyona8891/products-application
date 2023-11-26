@@ -3,17 +3,9 @@ import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../../../constants/constants';
-import {
-  AppDispatch,
-  RootState,
-  useAppDispatch,
-} from '../../../../store/store';
-import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
-import { useSelector } from 'react-redux';
-import { useFetchProductsQuery } from '../../../../store/utils/api';
 import { useSearchParams } from 'next/navigation';
 
-export function ItemQuantityInput(): React.ReactElement {
+export default function ItemQuantityInput(): React.ReactElement {
   const location = useSearchParams();
 
   const handleQueryChange = (param: string, value: number) => {
@@ -22,21 +14,8 @@ export function ItemQuantityInput(): React.ReactElement {
     return params.toString();
   };
 
-  const productsOnPage = useSelector(
-    (state: RootState) => state.products.productsOnPage
-  );
-
-  const dispatch: AppDispatch = useAppDispatch();
-
-  const { refetch } = useFetchProductsQuery({
-    currentPage: DEFAULT_CURRENT_PAGE,
-    productsOnPage,
-  });
-
-  const handleItemsQuantityInput = (quantity: number): void => {
-    dispatch(setProductsOnPage(quantity));
+  const handleItemsQuantityInput = (): void => {
     handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    refetch();
   };
 
   return (
@@ -47,7 +26,7 @@ export function ItemQuantityInput(): React.ReactElement {
       <input
         autoComplete="off"
         className={styles.input}
-        value={productsOnPage}
+        //value={productsOnPage}
         placeholder={DEFAULT_ITEMS_QUANTITY.toString()}
         onChange={(e) => {
           e.target.disabled = true;

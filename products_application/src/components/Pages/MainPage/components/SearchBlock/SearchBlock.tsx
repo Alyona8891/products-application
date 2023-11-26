@@ -1,46 +1,32 @@
 import { FormEvent, useEffect } from 'react';
 import styles from './SearchBlock.module.scss';
-import { setLocalStorageData } from '../../../../../utils/setLocalStorageData';
-import { getKeyWord } from '../../../../../utils/getKeyWord';
 import { DEFAULT_CURRENT_PAGE } from '../../../../../constants/constants';
-import { setSearchValue } from '../../../../store/reducers/productsReducer';
+import { useSelector } from 'react-redux';
 import {
   AppDispatch,
   RootState,
   useAppDispatch,
 } from '../../../../store/store';
-import { useSelector } from 'react-redux';
-import { useFetchProductsQuery } from '../../../../store/utils/api';
+import { setSearchValue } from '../../../../store/reducers/productsReducer';
 
-export function SearchBlock(props: {
-  handleQueryChange: (param: string, value: number) => void;
+export default function SearchBlock(props: {
+  handleQueryChange: (search: string, page: number) => void;
+  keyword: string;
 }): React.ReactElement {
-  const { handleQueryChange } = props;
-
+  const { handleQueryChange, keyword } = props;
   const dispatch: AppDispatch = useAppDispatch();
   const inputValue = useSelector(
     (state: RootState) => state.products.searchValue
   );
-  const productsOnPage = useSelector(
-    (state: RootState) => state.products.productsOnPage
-  );
-
-  const { refetch } = useFetchProductsQuery({
-    currentPage: DEFAULT_CURRENT_PAGE,
-    productsOnPage: productsOnPage,
-  });
-
-  useEffect(() => {
-    dispatch(setSearchValue(getKeyWord()));
-  }, [dispatch]);
 
   const handleSearchButton = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    setLocalStorageData(inputValue);
-    handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    dispatch(setSearchValue(inputValue));
-    refetch();
+    handleQueryChange(inputValue, DEFAULT_CURRENT_PAGE);
   };
+
+  useEffect(() => {
+    dispatch(setSearchValue(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <form className={styles.form} onSubmit={handleSearchButton}>
