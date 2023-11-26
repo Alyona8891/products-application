@@ -14,6 +14,7 @@ import {
 } from '../components/store/utils/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { IProduct, IResponse } from '../types/types';
+import { Details } from '../components/Details/Details';
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
@@ -29,7 +30,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productsOnPage,
       })
     );
-    const details = await store.dispatch(fetchProduct.initiate(currentCard));
+    const details = (await store.dispatch(fetchProduct.initiate(currentCard)))
+      .data;
 
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
@@ -60,7 +62,8 @@ export default function MainPage({
   currentCard,
   currentPage,
   productsOnPage,
-  keyword, //details,
+  keyword,
+  details,
 }: IServerSideProps): React.ReactElement {
   const { data, error } = response;
   const totalQuantity = data.total;
@@ -71,15 +74,23 @@ export default function MainPage({
 
   const queryParameters = new URLSearchParams(location);
 
+  let isFetchingDisabled = false;
+
   const handleQueryChange = (
-    search: string,
-    page: number,
-    productsOnPage: number
+    search = keyword,
+    page = currentPage,
+    limit = productsOnPage,
+    details = currentCard
   ) => {
-    queryParameters.set('page', page.toString());
-    queryParameters.set('search', search.toString());
-    queryParameters.set('limit', productsOnPage.toString());
-    router.push(pathname + '?' + queryParameters);
+    if (!isFetchingDisabled) {
+      isFetchingDisabled = true;
+      queryParameters.set('page', page.toString());
+      queryParameters.set('search', search.toString());
+      queryParameters.set('limit', limit.toString());
+      if (details === 0) queryParameters.delete('details');
+      if (!!details) queryParameters.set('details', details.toString());
+      router.push(pathname + '?' + queryParameters);
+    }
   };
 
   if (error) {
@@ -111,8 +122,11 @@ export default function MainPage({
             totalQuantity={totalQuantity}
             productsOnPage={productsOnPage}
           />
-          <CardsSection currentPage={currentPage} data={data} />
+          <CardsSection data={data} handleQueryChange={handleQueryChange} />
         </div>
+        {currentCard && (
+          <Details data={details} handleQueryChange={handleQueryChange} />
+        )}
       </main>
       <footer className={styles.footer} />
     </>

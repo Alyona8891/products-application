@@ -15,7 +15,8 @@ export default function ItemQuantityInput(props: {
   handleQueryChange: (
     search: string,
     page: number,
-    productsOnPage: number
+    limit: number,
+    details?: number
   ) => void;
   productsOnPage: number;
 }): React.ReactElement {

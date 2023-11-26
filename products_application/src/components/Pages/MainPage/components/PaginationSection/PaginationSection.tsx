@@ -7,7 +7,8 @@ export function PagintionSection(props: {
   handleQueryChange: (
     search: string,
     page: number,
-    productsOnPage: number
+    productsOnPage: number,
+    details?: number
   ) => void;
   totalQuantity: number;
   productsOnPage: number;

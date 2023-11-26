@@ -1,41 +1,34 @@
 import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
-//import { useState } from 'react';
-import Link from 'next/link';
 
-export function Details(props: { data: IProduct }): React.ReactElement {
-  const { data } = props;
-
-  //const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
-  //const currentCard = Number(queryParameters.get('details')) || 0;
-  const handleCloseButton = (): void => {
-    //navigate({ search: queryParameters.toString() });
-    //setOpenedProduct(null);
-  };
-  const currentPage = 1;
-
-  /*useEffect(() => {
-    if (currentCard > 0) {
-      if (data) {
-        setOpenedProduct({ ...data });
-      }
-    }
-  }, [currentCard, data]);*/
+export function Details(props: {
+  data: IProduct;
+  handleQueryChange: (
+    search?: string,
+    page?: number,
+    productsOnPage?: number,
+    details?: number
+  ) => void;
+}): React.ReactElement {
+  const { data, handleQueryChange } = props;
 
   return (
     <section className={styles.details} data-testid="details">
-      <Link href={`/?page=${currentPage}`}>
-        <div className={styles.shadow} onClick={handleCloseButton} />
-      </Link>
+      <div
+        className={styles.shadow}
+        onClick={() => handleQueryChange(undefined, undefined, undefined, 0)}
+      />
       {data?.title ? (
         <div className={styles.container}>
-          <Link
-            href={`/?page=${currentPage}`}
+          <button
+            onClick={() =>
+              handleQueryChange(undefined, undefined, undefined, 0)
+            }
             className={styles.close_button}
             data-testid="closeButton"
           >
             +
-          </Link>
+          </button>
           <img
             className={styles.image}
             src={data.images[0]}
@@ -46,13 +39,15 @@ export function Details(props: { data: IProduct }): React.ReactElement {
         </div>
       ) : (
         <div className={styles.container}>
-          <Link
-            href={`/?page=${currentPage}`}
+          <button
+            onClick={() =>
+              handleQueryChange(undefined, undefined, undefined, 0)
+            }
             className={styles.close_button}
             data-testid="closeButton"
           >
             +
-          </Link>
+          </button>
           <p className={styles.message}>
             Sorry, nothing found. Please, try again!
           </p>
