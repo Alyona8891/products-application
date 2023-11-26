@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { MainPage } from '../Pages/MainPage/MainPage';
+import { MainPage } from '../../pages';
 import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
 import { NotFoundPage } from '../Pages/NotFoundPage/NotFoundPage';
 import { Details } from '../Details/Details';

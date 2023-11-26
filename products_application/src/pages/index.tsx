@@ -1,16 +1,16 @@
-import { Loader } from '../../Loader/Loader';
+import { Loader } from '../components/Loader/Loader';
 import styles from './MainPage.module.scss';
-import { SearchSection } from './components/SearchSection/SearchSection';
-import { CardsSection } from './components/CardsSection/CardsSection';
-import { PagintionSection } from './components/PaginationSection/PaginationSection';
-import { DEFAULT_CURRENT_PAGE } from '../../../constants/constants';
+import { SearchSection } from '../components/Pages/MainPage/components/SearchSection/SearchSection';
+import { CardsSection } from '../components/Pages/MainPage/components/CardsSection/CardsSection';
+import { PagintionSection } from '../components/Pages/MainPage/components/PaginationSection/PaginationSection';
+import { DEFAULT_CURRENT_PAGE } from '../constants/constants';
 import { Outlet } from 'react-router-dom';
-import { RootState } from '../../store/store';
+import { RootState } from '../components/store/store';
 import { useSelector } from 'react-redux';
-import { useFetchProductsQuery } from '../../store/utils/api';
+import { useFetchProductsQuery } from '../components/store/utils/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function MainPage(): React.ReactElement {
+export default function MainPage(): React.ReactElement {
   const location = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

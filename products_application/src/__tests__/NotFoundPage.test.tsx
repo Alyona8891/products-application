@@ -1,7 +1,7 @@
 import { render, waitFor, screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { MainPage } from '../components/Pages/MainPage/MainPage';
+import { MainPage } from '../pages';
 import { NotFoundPage } from '../components/Pages/NotFoundPage/NotFoundPage';
 
 test('displays 404 page when navigating to an invalid route', async () => {
