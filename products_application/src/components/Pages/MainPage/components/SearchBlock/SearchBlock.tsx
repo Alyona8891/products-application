@@ -10,7 +10,11 @@ import {
 import { setSearchValue } from '../../../../store/reducers/productsReducer';
 
 export default function SearchBlock(props: {
-  handleQueryChange: (search: string, page: number) => void;
+  handleQueryChange: (
+    search: string,
+    page: number,
+    productsOnPage: number
+  ) => void;
   keyword: string;
 }): React.ReactElement {
   const { handleQueryChange, keyword } = props;
@@ -18,10 +22,13 @@ export default function SearchBlock(props: {
   const inputValue = useSelector(
     (state: RootState) => state.products.searchValue
   );
+  const productsOnPage = useSelector(
+    (state: RootState) => state.products.productsOnPage
+  );
 
   const handleSearchButton = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    handleQueryChange(inputValue, DEFAULT_CURRENT_PAGE);
+    handleQueryChange(inputValue, DEFAULT_CURRENT_PAGE, productsOnPage);
   };
 
   useEffect(() => {

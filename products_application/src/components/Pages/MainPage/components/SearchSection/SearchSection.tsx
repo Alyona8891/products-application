@@ -3,7 +3,11 @@ import SearchBlock from '../SearchBlock/SearchBlock';
 import styles from './SearchSection.module.scss';
 
 export function SearchSection(props: {
-  handleQueryChange: (search: string, page: number) => void;
+  handleQueryChange: (
+    search: string,
+    page: number,
+    productsOnPage: number
+  ) => void;
   keyword: string;
 }): React.ReactElement {
   const { handleQueryChange, keyword } = props;

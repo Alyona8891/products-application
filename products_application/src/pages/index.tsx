@@ -2,7 +2,10 @@ import styles from './MainPage.module.scss';
 import { SearchSection } from '../components/Pages/MainPage/components/SearchSection/SearchSection';
 import { CardsSection } from '../components/Pages/MainPage/components/CardsSection/CardsSection';
 import { PagintionSection } from '../components/Pages/MainPage/components/PaginationSection/PaginationSection';
-import { DEFAULT_CURRENT_PAGE } from '../constants/constants';
+import {
+  DEFAULT_CURRENT_PAGE,
+  DEFAULT_ITEMS_QUANTITY,
+} from '../constants/constants';
 import { wrapper } from '../components/store/store';
 import {
   fetchProducts,
@@ -15,7 +18,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const currentPage = Number(context.query.page) || DEFAULT_CURRENT_PAGE;
     const currentCard = context.query.details?.toString() || null;
-    const productsOnPage = Number(context.query.limit) || DEFAULT_CURRENT_PAGE;
+    const productsOnPage =
+      Number(context.query.limit) || DEFAULT_ITEMS_QUANTITY;
     const keyword = context.query.search?.toString() || '';
     const response = await store.dispatch(
       fetchProducts.initiate({
@@ -37,6 +41,7 @@ interface IServerSideProps {
   response: IResponse;
   currentCard: number;
   currentPage: number;
+  productsOnPage: number;
   keyword: string;
 }
 
@@ -44,9 +49,11 @@ export default function MainPage({
   response,
   currentCard,
   currentPage,
+  productsOnPage,
   keyword,
 }: IServerSideProps): React.ReactElement {
   const { data, error } = response;
+  const totalQuantity = data.total;
 
   const location = useSearchParams();
   const router = useRouter();
@@ -54,9 +61,14 @@ export default function MainPage({
 
   const queryParameters = new URLSearchParams(location);
 
-  const handleQueryChange = (search: string, page: number) => {
+  const handleQueryChange = (
+    search: string,
+    page: number,
+    productsOnPage: number
+  ) => {
     queryParameters.set('page', page.toString());
     queryParameters.set('search', search.toString());
+    queryParameters.set('limit', productsOnPage.toString());
     router.push(pathname + '?' + queryParameters);
   };
 
@@ -86,6 +98,8 @@ export default function MainPage({
           <PagintionSection
             currentPage={currentPage}
             handleQueryChange={handleQueryChange}
+            totalQuantity={totalQuantity}
+            productsOnPage={productsOnPage}
           />
           <CardsSection currentPage={currentPage} data={data} />
         </div>

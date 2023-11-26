@@ -3,19 +3,28 @@ import {
   DEFAULT_CURRENT_PAGE,
   DEFAULT_ITEMS_QUANTITY,
 } from '../../../../../constants/constants';
-import { useSearchParams } from 'next/navigation';
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+} from '../../../../store/store';
+import { useSelector } from 'react-redux';
+import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
 
-export default function ItemQuantityInput(): React.ReactElement {
-  const location = useSearchParams();
+export default function ItemQuantityInput(props: {
+  handleQueryChange: (
+    search: string,
+    page: number,
+    productsOnPage: number
+  ) => void;
+  productsOnPage: number;
+}): React.ReactElement {
+  const { handleQueryChange, productsOnPage } = props;
+  const dispatch: AppDispatch = useAppDispatch();
+  const keyword = useSelector((state: RootState) => state.products.searchValue);
 
-  const handleQueryChange = (param: string, value: number) => {
-    const params = new URLSearchParams(location);
-    params.set(param, value.toString());
-    return params.toString();
-  };
-
-  const handleItemsQuantityInput = (): void => {
-    handleQueryChange('page', DEFAULT_CURRENT_PAGE);
+  const handleItemsQuantityInput = (value: number): void => {
+    handleQueryChange(keyword, DEFAULT_CURRENT_PAGE, value);
   };
 
   return (
@@ -26,17 +35,18 @@ export default function ItemQuantityInput(): React.ReactElement {
       <input
         autoComplete="off"
         className={styles.input}
-        //value={productsOnPage}
+        value={productsOnPage}
         placeholder={DEFAULT_ITEMS_QUANTITY.toString()}
         onChange={(e) => {
           e.target.disabled = true;
           const target = +e.target.value;
           if (target > 0) {
-            handleItemsQuantityInput(+e.target.value);
+            dispatch(setProductsOnPage(+e.target.value));
           }
           if (target === 0) {
-            handleItemsQuantityInput(DEFAULT_ITEMS_QUANTITY);
+            dispatch(setProductsOnPage(DEFAULT_ITEMS_QUANTITY));
           }
+          handleItemsQuantityInput(target);
           e.target.disabled = false;
         }}
       />

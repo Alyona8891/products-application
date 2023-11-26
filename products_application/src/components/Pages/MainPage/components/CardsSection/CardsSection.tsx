@@ -18,7 +18,7 @@ export function CardsSection(props: {
               href={`details/?page=${currentPage}&details=${product.id}`}
               key={product.id}
             >
-              <Card product={product} />;
+              <Card product={product} />
             </Link>
           );
         })

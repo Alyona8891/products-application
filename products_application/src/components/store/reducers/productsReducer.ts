@@ -11,10 +11,10 @@ export const productsSlice = createSlice({
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
-    /*setProductsOnPage: (state, action: PayloadAction<number>) => {
+    setProductsOnPage: (state, action: PayloadAction<number>) => {
       state.productsOnPage = action.payload;
     },
-    setProductsLoadingStatus: (state, action: PayloadAction<string>) => {
+    /*setProductsLoadingStatus: (state, action: PayloadAction<string>) => {
       state.productsLoadingStatus = action.payload;
     },
     setProductLoadingStatus: (state, action: PayloadAction<string>) => {
@@ -27,8 +27,8 @@ export const {
   /*setProducts,
   setTotalQuantity,*/
   setSearchValue,
-  /*setProductsOnPage,
-  setProductsLoadingStatus,
+  setProductsOnPage,
+  /*setProductsLoadingStatus,
   setProductLoadingStatus,*/
 } = productsSlice.actions;
 export const productsReducer = productsSlice.reducer;

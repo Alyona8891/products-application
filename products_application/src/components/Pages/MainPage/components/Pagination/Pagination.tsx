@@ -1,18 +1,26 @@
+import { useSelector } from 'react-redux';
 import { getPagesArr } from '../../../../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
+import { RootState } from '../../../../store/store';
 
 export default function Pagination(props: {
   currentPage: number;
-  handleQueryChange: (param: string, value: number) => void;
+  handleQueryChange: (
+    search: string,
+    page: number,
+    productsOnPage: number
+  ) => void;
+  totalQuantity: number;
+  productsOnPage: number;
 }): React.ReactElement {
-  const { currentPage, handleQueryChange } = props;
-
-  const totalQuantity = 100;
-
-  const productsOnPage = 10;
+  const { currentPage, handleQueryChange, totalQuantity, productsOnPage } =
+    props;
+  const inputValue = useSelector(
+    (state: RootState) => state.products.searchValue
+  );
 
   const handlePaginationButton = (currentPage: number): void => {
-    handleQueryChange('page', currentPage);
+    handleQueryChange(inputValue, currentPage, productsOnPage);
   };
 
   return (
