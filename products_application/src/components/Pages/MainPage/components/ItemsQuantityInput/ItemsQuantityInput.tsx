@@ -34,6 +34,7 @@ export default function ItemQuantityInput(props: {
         Enter number of items shown per page
       </label>
       <input
+        data-testid="quantityInput"
         autoComplete="off"
         className={styles.input}
         value={productsOnPage}
