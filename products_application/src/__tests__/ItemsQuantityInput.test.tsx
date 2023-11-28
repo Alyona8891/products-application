@@ -17,12 +17,12 @@ import mockRouter from 'next-router-mock';
 
 vi.mock('next/router', () => vi.importActual('next-router-mock'));
 
-describe('testing SearchBlock.tsx', () => {
+describe('testing ItemsQuantityInput.tsx', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  test('clicking the Search button change query parameters', async () => {
+  test('changing quantity change query parameters', async () => {
     mockRouter.push('/');
     renderWithProviders(
       <MemoryRouterProvider>
