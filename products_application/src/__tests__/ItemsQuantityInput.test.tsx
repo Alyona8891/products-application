@@ -17,12 +17,12 @@ import mockRouter from 'next-router-mock';
 
 vi.mock('next/router', () => vi.importActual('next-router-mock'));
 
-describe('testing SearchBlock.tsx', () => {
+describe('testing ItemsQuantityInput.tsx', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  test('clicking the Search button change query parameters', async () => {
+  test('changing quantity change query parameters', async () => {
     mockRouter.push('/');
     renderWithProviders(
       <MemoryRouterProvider>
@@ -40,12 +40,10 @@ describe('testing SearchBlock.tsx', () => {
       </MemoryRouterProvider>
     );
 
-    const searchInput = await screen.findByTestId('searchInput');
+    const searchInput = await screen.findByTestId('quantityInput');
     expect(searchInput).toBeInTheDocument();
-    expect(mockRouter.asPath).not.contain('search=wwwwww');
-    fireEvent.change(searchInput, { target: { value: 'wwwwww' } });
-    const searchButton = await screen.findByTestId('searchButton');
-    fireEvent.click(searchButton);
-    expect(mockRouter.asPath).contain('search=wwwwww');
+    expect(mockRouter.asPath).not.contain('limit=101');
+    fireEvent.change(searchInput, { target: { value: '101' } });
+    expect(mockRouter.asPath).contain('limit=101');
   });
 });

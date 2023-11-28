@@ -1,72 +1,53 @@
 import styles from './Details.module.scss';
 import { IProduct } from '../../types/types';
-import { Loader } from '../Loader/Loader';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { DEFAULT_CURRENT_PAGE } from '../../constants/constants';
-import { useFetchProductQuery } from '../store/utils/api';
-import { AppDispatch, useAppDispatch } from '../store/store';
-import { setProductLoadingStatus } from '../store/reducers/productsReducer';
 
-export function Details(): React.ReactElement {
-  const dispatch: AppDispatch = useAppDispatch();
-  const queryParameters = new URLSearchParams(location.search);
-  const navigate = useNavigate();
-  const [openedProduct, setOpenedProduct] = useState<IProduct | null>(null);
-  const currentCard = Number(queryParameters.get('details')) || 0;
-  const handleCloseButton = (): void => {
-    dispatch(setProductLoadingStatus('loading'));
-    navigate({ search: queryParameters.toString() });
-    setOpenedProduct(null);
-  };
-  const currentPage =
-    Number(queryParameters.get('page')) || DEFAULT_CURRENT_PAGE;
-
-  const { data, isFetching } = useFetchProductQuery(currentCard);
-
-  useEffect(() => {
-    if (currentCard > 0) {
-      if (data) {
-        setOpenedProduct({ ...data });
-      }
-    }
-  }, [currentCard, data]);
+export function Details(props: {
+  data: IProduct;
+  handleQueryChange: (
+    search?: string,
+    page?: number,
+    productsOnPage?: number,
+    details?: number
+  ) => void;
+}): React.ReactElement {
+  const { data, handleQueryChange } = props;
 
   return (
     <section className={styles.details} data-testid="details">
-      <Link to={`/?page=${currentPage}`}>
-        <div className={styles.shadow} onClick={handleCloseButton} />
-      </Link>
-      {isFetching ? (
+      <div
+        className={styles.shadow}
+        onClick={() => handleQueryChange(undefined, undefined, undefined, 0)}
+      />
+      {data?.title ? (
         <div className={styles.container}>
-          <Loader />
-        </div>
-      ) : openedProduct?.title ? (
-        <div className={styles.container}>
-          <Link
-            to={`/?page=${currentPage}`}
+          <button
+            onClick={() =>
+              handleQueryChange(undefined, undefined, undefined, 0)
+            }
             className={styles.close_button}
             data-testid="closeButton"
           >
             +
-          </Link>
+          </button>
           <img
             className={styles.image}
-            src={openedProduct.images[0]}
+            src={data.images[0]}
             alt="detail image"
           />
-          <h3 className={styles.title}>{openedProduct.title}</h3>
-          <p className={styles.text}>{openedProduct.description}</p>
+          <h3 className={styles.title}>{data.title}</h3>
+          <p className={styles.text}>{data.description}</p>
         </div>
       ) : (
         <div className={styles.container}>
-          <Link
-            to={`/?page=${currentPage}`}
+          <button
+            onClick={() =>
+              handleQueryChange(undefined, undefined, undefined, 0)
+            }
             className={styles.close_button}
             data-testid="closeButton"
           >
             +
-          </Link>
+          </button>
           <p className={styles.message}>
             Sorry, nothing found. Please, try again!
           </p>

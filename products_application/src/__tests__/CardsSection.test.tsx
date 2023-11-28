@@ -1,10 +1,7 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { beforeAll, afterEach, afterAll, expect, test, describe } from 'vitest';
-import { renderWithProviders } from './utils/utils';
-import { App } from '../components/App/App';
 import { server } from './mockData/handlers';
-import { mockEmptyProductsData } from './mockData/mockData';
-import { MemoryRouter } from 'react-router-dom';
+import { mockEmptyProductsData, mockRequestResult } from './mockData/mockData';
 import { CardsSection } from '../components/Pages/MainPage/components/CardsSection/CardsSection';
 
 describe('testing CardSection.tsx', () => {
@@ -13,10 +10,8 @@ describe('testing CardSection.tsx', () => {
   afterAll(() => server.close());
 
   test('displays appropriate message when no cards are present', () => {
-    renderWithProviders(
-      <MemoryRouter>
-        <CardsSection currentPage={1} data={mockEmptyProductsData} />
-      </MemoryRouter>
+    render(
+      <CardsSection data={mockEmptyProductsData} handleQueryChange={() => {}} />
     );
 
     const message = screen.getByText(
@@ -26,7 +21,9 @@ describe('testing CardSection.tsx', () => {
   });
 
   test('renders the specified number of cards', async () => {
-    renderWithProviders(<App />);
+    render(
+      <CardsSection data={mockRequestResult} handleQueryChange={() => {}} />
+    );
 
     await screen.findAllByAltText('card image');
     const elementsArr = screen.getAllByAltText('card image');

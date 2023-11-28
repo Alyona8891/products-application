@@ -1,6 +1,6 @@
 import styles from './NotFoundPage.module.scss';
 
-export function NotFoundPage(): React.ReactElement {
+export default function NotFoundPage(): React.ReactElement {
   return (
     <main>
       <h3 className={styles.message}>

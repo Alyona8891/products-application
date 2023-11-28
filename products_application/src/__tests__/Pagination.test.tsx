@@ -1,21 +1,36 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { beforeAll, afterEach, afterAll, expect, test } from 'vitest';
-import { App } from '../components/App/App';
+import { expect, test, describe, vi } from 'vitest';
+import { mockProduct, mockRequestResult } from './mockData/mockData';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
+import mockRouter from 'next-router-mock';
+import MainPage from '../pages';
+import React from 'react';
 import { renderWithProviders } from './utils/utils';
-import { server } from './mockData/handlers';
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+vi.mock('next/router', () => vi.importActual('next-router-mock'));
 
-test('the component updates URL query parameter when page changes', async () => {
-  renderWithProviders(<App />);
+describe('testing pagination.tsx', (): void => {
+  test('the component updates URL query parameter when page changes', async () => {
+    mockRouter.push('/');
+    renderWithProviders(
+      <MemoryRouterProvider>
+        <MainPage
+          response={{
+            data: mockRequestResult,
+            error: undefined,
+          }}
+          details={mockProduct}
+          currentCard={1}
+          currentPage={1}
+          productsOnPage={10}
+          keyword={''}
+        />
+      </MemoryRouterProvider>
+    );
 
-  const nextPage = await screen.findByTestId('nextPage');
-  fireEvent.click(nextPage);
-  expect(location.search).to.equal('?page=2');
-
-  const prevPage = await screen.findByTestId('prevPage');
-  fireEvent.click(prevPage);
-  expect(location.search).to.equal('?page=1');
+    const nextPage = await screen.findByTestId('nextPage');
+    expect(mockRouter.query.page).to.equal(undefined);
+    fireEvent.click(nextPage);
+    expect(mockRouter.query.page).to.equal('2');
+  });
 });

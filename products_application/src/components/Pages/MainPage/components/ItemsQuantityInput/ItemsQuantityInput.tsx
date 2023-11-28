@@ -8,30 +8,24 @@ import {
   RootState,
   useAppDispatch,
 } from '../../../../store/store';
-import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
 import { useSelector } from 'react-redux';
-import { useFetchProductsQuery } from '../../../../store/utils/api';
+import { setProductsOnPage } from '../../../../store/reducers/productsReducer';
 
-export function ItemQuantityInput(props: {
-  handleQueryChange: (param: string, value: number) => void;
+export default function ItemQuantityInput(props: {
+  handleQueryChange: (
+    search: string,
+    page: number,
+    limit: number,
+    details?: number
+  ) => void;
+  productsOnPage: number;
 }): React.ReactElement {
-  const { handleQueryChange } = props;
-
-  const productsOnPage = useSelector(
-    (state: RootState) => state.products.productsOnPage
-  );
-
+  const { handleQueryChange, productsOnPage } = props;
   const dispatch: AppDispatch = useAppDispatch();
+  const keyword = useSelector((state: RootState) => state.products.searchValue);
 
-  const { refetch } = useFetchProductsQuery({
-    currentPage: DEFAULT_CURRENT_PAGE,
-    productsOnPage,
-  });
-
-  const handleItemsQuantityInput = (quantity: number): void => {
-    dispatch(setProductsOnPage(quantity));
-    handleQueryChange('page', DEFAULT_CURRENT_PAGE);
-    refetch();
+  const handleItemsQuantityInput = (value: number): void => {
+    handleQueryChange(keyword, DEFAULT_CURRENT_PAGE, value);
   };
 
   return (
@@ -40,6 +34,7 @@ export function ItemQuantityInput(props: {
         Enter number of items shown per page
       </label>
       <input
+        data-testid="quantityInput"
         autoComplete="off"
         className={styles.input}
         value={productsOnPage}
@@ -48,11 +43,12 @@ export function ItemQuantityInput(props: {
           e.target.disabled = true;
           const target = +e.target.value;
           if (target > 0) {
-            handleItemsQuantityInput(+e.target.value);
+            dispatch(setProductsOnPage(+e.target.value));
           }
           if (target === 0) {
-            handleItemsQuantityInput(DEFAULT_ITEMS_QUANTITY);
+            dispatch(setProductsOnPage(DEFAULT_ITEMS_QUANTITY));
           }
+          handleItemsQuantityInput(target);
           e.target.disabled = false;
         }}
       />

@@ -1,30 +1,27 @@
+import { useSelector } from 'react-redux';
 import { getPagesArr } from '../../../../../utils/getPagesArr';
 import styles from './Pagination.module.scss';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
-import { useFetchProductsQuery } from '../../../../store/utils/api';
 
-export function Pagination(props: {
+export default function Pagination(props: {
   currentPage: number;
-  handleQueryChange: (param: string, value: number) => void;
+  handleQueryChange: (
+    search: string,
+    page: number,
+    productsOnPage: number,
+    details?: number
+  ) => void;
+  totalQuantity: number;
+  productsOnPage: number;
 }): React.ReactElement {
-  const { currentPage, handleQueryChange } = props;
-  const totalQuantity = useSelector(
-    (state: RootState) => state.products.totalQuantity
+  const { currentPage, handleQueryChange, totalQuantity, productsOnPage } =
+    props;
+  const inputValue = useSelector(
+    (state: RootState) => state.products.searchValue
   );
-
-  const productsOnPage = useSelector(
-    (state: RootState) => state.products.productsOnPage
-  );
-
-  const { refetch } = useFetchProductsQuery({
-    currentPage,
-    productsOnPage,
-  });
 
   const handlePaginationButton = (currentPage: number): void => {
-    handleQueryChange('page', currentPage);
-    refetch();
+    handleQueryChange(inputValue, currentPage, productsOnPage);
   };
 
   return (
@@ -41,14 +38,14 @@ export function Pagination(props: {
       {getPagesArr(totalQuantity, productsOnPage).map((page) => {
         return (
           <button
-            key={page}
             type="button"
+            onClick={(): void => handlePaginationButton(page)}
             className={
               currentPage === page
                 ? `${styles.button} ${styles.button_active}`
                 : styles.button
             }
-            onClick={(): void => handlePaginationButton(page)}
+            key={page}
           >
             {page}
           </button>
