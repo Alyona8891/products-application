@@ -3,7 +3,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 export interface IResponse {
   data: IRequestResult;
-  error: FetchBaseQueryError | SerializedError;
+  error: FetchBaseQueryError | SerializedError | undefined;
 }
 
 export interface IRequestResult {

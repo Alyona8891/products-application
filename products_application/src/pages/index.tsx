@@ -12,7 +12,8 @@ import {
   fetchProducts,
   getRunningQueriesThunk,
 } from '../components/store/utils/api';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { IProduct, IResponse } from '../types/types';
 import { Details } from '../components/Details/Details';
 
