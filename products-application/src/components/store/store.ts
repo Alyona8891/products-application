@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import { usersReducer } from "./reducers/usersReducer";
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import { usersReducer } from './reducers/usersReducer';
 
 export const store = configureStore({
   reducer: {

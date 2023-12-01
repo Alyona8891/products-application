@@ -1,4 +1,4 @@
-import styles from "./NotFoundPage.module.scss";
+import styles from './NotFoundPage.module.scss';
 
 export function NotFoundPage(): React.ReactElement {
   return (
