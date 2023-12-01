@@ -10,6 +10,7 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { path: "main", element: <MainPage /> },
+      { path: "", element: <MainPage /> },
       { path: "uncontrolled", element: <UncontrolledPage /> },
       { path: "controlled", element: <ControlledPage /> },
     ],
