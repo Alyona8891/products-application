@@ -12,4 +12,5 @@ export interface IUser {
 
 export interface IState {
   users: IUser[];
+  countries: string[];
 }

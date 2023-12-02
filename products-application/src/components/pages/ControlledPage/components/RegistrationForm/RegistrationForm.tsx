@@ -6,11 +6,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { ValidationError } from 'yup';
 import { PasswordInput } from '../PasswordInput/PasswordInput';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
 
 export function RegistrationForm(): React.ReactElement {
   const onSubmit: SubmitHandler<IUser> = (user: IUser): void => {
     console.log(user);
   };
+  const countries = useSelector((state: RootState) => state.users.countries);
 
   const [passwordErrors, setPasswordErrors] = useState<string[] | null>(null);
 
@@ -109,7 +112,16 @@ export function RegistrationForm(): React.ReactElement {
             </label>
             <label className={styles.input_block}>
               Country:
-              <input {...register('country')} type={'text'} />
+              <input
+                {...register('country')}
+                list="country"
+                type={'text'}
+              ></input>
+              <datalist id="country">
+                {countries.map((country, ndx) => (
+                  <option value={country} key={ndx} />
+                ))}
+              </datalist>
               <p className={styles.error}>{errors.country?.message}</p>
             </label>
             <label className={styles.input_block}>

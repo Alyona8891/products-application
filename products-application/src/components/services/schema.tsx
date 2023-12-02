@@ -1,5 +1,7 @@
 import * as yup from 'yup';
+import { store } from '../store/store';
 const MAX_FILE_SIZE = 1024000;
+const countries = store.getState().users.countries;
 
 export const schema = yup.object().shape({
   name: yup
@@ -16,7 +18,14 @@ export const schema = yup.object().shape({
     .required()
     .oneOf([yup.ref('password')], 'Passwords must match'),
   gender: yup.string().required(),
-  country: yup.string().required(),
+  country: yup
+    .string()
+    .required()
+    .test(
+      'country',
+      'Non-existent country',
+      (value) => !!value && countries.includes(value)
+    ),
   image: yup
     .mixed<FileList>()
     .nullable()
