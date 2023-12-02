@@ -1,34 +1,17 @@
+import { useSelector } from 'react-redux';
 import { UserCard } from '../../UI/UserCard/UserCard';
 import styles from './MainPage.module.scss';
-const data = [
-  {
-    id: 1,
-    name: 'Alena',
-    age: 35,
-    email: 'besssta888@mail.ru',
-    password: '12345678',
-    gender: 'female',
-    country: 'belarus',
-  },
-  {
-    id: 2,
-    name: 'Alena',
-    age: 35,
-    email: 'besssta888@mail.ru',
-    password: '12345678',
-    gender: 'female',
-    country: 'belarus',
-  },
-];
+import { RootState } from '../../store/store';
 
 export function MainPage(): React.ReactElement {
+  const users = useSelector((state: RootState) => state.users.users);
   return (
     <>
       <header className={styles.header} />
       <main className={styles.main}>
         <div className={styles.container}>
-          {data.map((user) => {
-            return <UserCard user={user} key={user.id} />;
+          {users.map((user, ndx) => {
+            return <UserCard user={user} key={ndx} />;
           })}
         </div>
       </main>

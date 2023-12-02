@@ -2,7 +2,17 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IState, IUser } from '../../../types/types';
 
 export const initialState: IState = {
-  users: [],
+  users: [
+    {
+      id: 1,
+      name: 'Alena',
+      age: 35,
+      email: 'besssta888@mail.ru',
+      password: '12345678',
+      gender: 'female',
+      country: 'belarus',
+    },
+  ],
 };
 
 export const usersSlice = createSlice({

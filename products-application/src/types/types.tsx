@@ -5,6 +5,8 @@ export interface IUser {
   password: string;
   gender: string;
   country: string;
+  image: FileList;
+  ts?: string | undefined;
 }
 
 export interface IState {
