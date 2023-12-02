@@ -3,6 +3,7 @@ export interface IUser {
   age: number;
   email: string;
   password: string;
+  confirmPassword: string;
   gender: string;
   country: string;
   image: FileList;

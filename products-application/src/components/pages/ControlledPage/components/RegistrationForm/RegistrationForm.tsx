@@ -95,11 +95,11 @@ export function RegistrationForm(): React.ReactElement {
               <div className={styles.inner_indicator} />
               <div className={styles.inner_indicator} />
             </div>
-            {/*<label className={styles.input_block}>
+            <label className={styles.input_block}>
               Confirm password:
-              <input {...register('password')} type={'password'} />
-              <p className={styles.error}>{errors.password?.message}</p>
-  </label>*/}
+              <input {...register('confirmPassword')} type={'password'} />
+              <p className={styles.error}>{errors.confirmPassword?.message}</p>
+            </label>
             <label className={styles.input_block}>
               Gender:
               <select {...register('gender')}>

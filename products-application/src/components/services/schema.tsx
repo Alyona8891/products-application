@@ -11,6 +11,10 @@ export const schema = yup.object().shape({
     .required('Enter your age')
     .positive('Must be no negative values'),
   email: yup.string().email().required('Enter your email'),
+  confirmPassword: yup
+    .string()
+    .required()
+    .oneOf([yup.ref('password')], 'Passwords must match'),
   gender: yup.string().required(),
   country: yup.string().required(),
   image: yup
@@ -25,7 +29,7 @@ export const schema = yup.object().shape({
     )
     .test(
       'fileType',
-      'Your Error Message',
+      'Allow only "png", "jpeg" types',
       (value) =>
         value &&
         Array.from(value).every(
