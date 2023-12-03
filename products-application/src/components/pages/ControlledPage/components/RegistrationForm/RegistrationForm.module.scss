@@ -1,0 +1,120 @@
+.main_block {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background: inherit;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  
+    .wrapper {
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0 40px;
+      width: 55%;
+      box-shadow:  rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      position: absolute;
+    }
+    
+    .title {
+      font-size: calc(27px + (28 - 27) * ((100vw - 320px) / (1920 - 320)));
+      margin-bottom: calc(20px + (30 - 20) * ((100vw - 320px) / (1920 - 320)));
+    }
+}
+
+.input_block {
+    display: block;
+    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    height: 50px;
+}
+
+.input {
+    width: 75%;
+    height: 25px;
+}
+
+.error {
+    position: absolute;
+    color: red;
+    right: 0;
+    font-size: 12px;
+    top: 28px;
+}
+
+.file_input {
+    display: none;
+}
+
+.indicator {
+    width: 200px;
+    height: 5px;
+    background-color: grey;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.indicator_none {
+    width: 200px;
+    height: 5px;
+    opacity: 0;
+    margin-bottom: 10px;
+}
+.button, .submit_button {
+    padding: 5px;
+    background-color: rgb(199, 245, 71);
+    border-radius: 5px;
+    height: 30px;
+    cursor: pointer;
+    font-family: inherit;
+}
+.submit_button {
+    margin-top: 10px;
+    font-size: 18px;
+    height: initial;
+}
+
+.inner_indicator {
+    height: 5px;
+    width: 50px;
+    background-color: inherit;
+}
+
+.red {
+    & .inner_indicator:first-child {
+        background-color: red;
+    }
+}
+
+.orange {
+    & .inner_indicator:first-child {
+        background-color: orangered;
+    }
+    & .inner_indicator:nth-child(2) {
+        background-color: orangered;
+    }
+}
+
+.salad {
+    & .inner_indicator:first-child {
+        background-color: yellowgreen;
+    }
+    & .inner_indicator:nth-child(2) {
+        background-color: yellowgreen;
+    }
+    & .inner_indicator:nth-child(3) {
+        background-color: yellowgreen;
+    }
+}
+
+.green {
+    & .inner_indicator {
+        background-color: green;
+    }
+}
+
+.input_block_checkbox input{
+    margin-right: 10px;
+}
