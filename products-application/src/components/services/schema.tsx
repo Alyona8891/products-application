@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { store } from '../store/store';
-const MAX_FILE_SIZE = 1024000;
+const MAX_FILE_SIZE = 102400;
 const countries = store.getState().users.countries;
 
 export const schema = yup.object().shape({
@@ -33,17 +33,14 @@ export const schema = yup.object().shape({
     .test(
       'is-valid-size',
       'Max allowed size is 100KB',
-      (value) =>
-        value && Array.from(value).every((file) => file.size <= MAX_FILE_SIZE)
+      (value) => !!value.length && value[0].size <= MAX_FILE_SIZE
     )
     .test(
       'fileType',
-      'Allow only "png", "jpeg" types',
+      'Only "png", "jpeg" types',
       (value) =>
-        value &&
-        Array.from(value).every(
-          (file) => file.type === 'image/png' || file.type === 'image/jpeg'
-        )
+        !!value.length &&
+        (value[0].type === 'image/png' || value[0].type === 'image/jpeg')
     ),
   ts: yup.string().matches(/true/, { message: 'You must agree' }),
 });

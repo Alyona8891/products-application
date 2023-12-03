@@ -6,12 +6,30 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { ValidationError } from 'yup';
 import { PasswordInput } from '../PasswordInput/PasswordInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
+import { useNavigate } from 'react-router-dom';
+import { setUsers } from '../../../../store/reducers/usersReducer';
+import { convertToBase64 } from '../../../../../utils/convertToBase64';
 
 export function RegistrationForm(): React.ReactElement {
-  const onSubmit: SubmitHandler<IUser> = (user: IUser): void => {
-    console.log(user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<IUser> = async (user: IUser): Promise<void> => {
+    const image =
+      user.image && user.image ? await convertToBase64(user.image[0]) : '';
+    dispatch(
+      setUsers({
+        name: user.name as string,
+        age: user.age.toString() as string,
+        email: user.email as string,
+        password: user.password as string,
+        gender: user.gender as string,
+        country: user.country as string,
+        image: image as string,
+      })
+    );
+    navigate('/main');
   };
   const countries = useSelector((state: RootState) => state.users.countries);
 

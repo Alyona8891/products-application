@@ -1,10 +1,8 @@
-export async function convertToBase64(file: File) {
-  const response = await fetch(file.webkitRelativePath);
-  const blob = await response.blob();
-  return await new Promise((resolve, reject) => {
+export const convertToBase64 = (file: File) => {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result?.toString() || '');
+    reader.onerror = (error) => reject(error);
   });
-}
+};

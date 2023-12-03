@@ -1,13 +1,13 @@
 export interface IUser {
   name: string;
-  age: string;
+  age: number;
   email: string;
   password: string;
   confirmPassword: string;
   gender: string;
   country: string;
-  image: string;
-  ts: string;
+  image: FileList;
+  ts?: string;
 }
 
 export interface IState {

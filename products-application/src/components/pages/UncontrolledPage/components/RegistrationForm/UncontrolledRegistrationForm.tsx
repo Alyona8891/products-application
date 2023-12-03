@@ -10,6 +10,7 @@ import {
 } from '../../../../store/reducers/errorsReducer';
 import { convertToBase64 } from '../../../../../utils/convertToBase64';
 import { setUsers } from '../../../../store/reducers/usersReducer';
+import { useNavigate } from 'react-router-dom';
 
 export function RegistrationForm(): React.ReactElement {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
@@ -25,7 +26,7 @@ export function RegistrationForm(): React.ReactElement {
       confirmPassword: confirmPasswordRef.current?.value,
       gender: genderRef.current?.value,
       country: countryRef.current?.value,
-      image: imageRef.current?.value,
+      image: imageRef.current?.files,
       ts: tsRef.current?.checked,
     };
     try {
@@ -35,7 +36,7 @@ export function RegistrationForm(): React.ReactElement {
       }
       const image =
         imageRef.current && imageRef.current.files
-          ? convertToBase64(imageRef.current.files[0])
+          ? await convertToBase64(imageRef.current.files[0])
           : '';
       dispatch(
         setUsers({
@@ -48,6 +49,7 @@ export function RegistrationForm(): React.ReactElement {
           image: image as string,
         })
       );
+      navigate('/main');
     } catch (e) {
       const error = e as ValidationError;
       dispatch(setErrors(error.inner));
@@ -56,6 +58,7 @@ export function RegistrationForm(): React.ReactElement {
   const countries = useSelector((state: RootState) => state.users.countries);
   const errors = useSelector((state: RootState) => state.errors.errors);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
@@ -91,7 +94,7 @@ export function RegistrationForm(): React.ReactElement {
   return (
     <main className={styles.main_block}>
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>Register</h2>
+        <h2 className={styles.title}>Register (Uncontrolled Form)</h2>
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
           <div className={styles.container}>
             <label className={styles.input_block}>
