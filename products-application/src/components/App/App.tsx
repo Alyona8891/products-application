@@ -6,7 +6,7 @@ import { store } from '../store/store';
 export function App(): React.ReactElement {
   return (
     <Provider store={store}>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </Provider>
   );
 }

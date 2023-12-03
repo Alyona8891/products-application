@@ -14,6 +14,7 @@ export function PasswordInput(props: {
     <label className={styles.input_block}>
       Password:
       <input
+        className={styles.input}
         onChange={async (e) => {
           validate(e.target.value).then(() => {
             onChange(e);
@@ -23,7 +24,15 @@ export function PasswordInput(props: {
         name={name}
         type={'password'}
       />
-      {errors && errors.map((e, idx) => <p key={idx}>{e}</p>)}
+      {errors && (
+        <div className={styles.errors_block}>
+          {errors.map((e, idx) => (
+            <p className={styles.error} key={idx}>
+              {e}
+            </p>
+          ))}
+        </div>
+      )}
     </label>
   );
 }

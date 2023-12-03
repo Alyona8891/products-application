@@ -75,7 +75,7 @@ export function RegistrationForm(): React.ReactElement {
     if (passwordErrors && passwordErrors.length === 0) {
       return `${styles.indicator} ${styles.green}`;
     }
-    if (!passwordErrors) {
+    if (passwordErrors) {
       return `${styles.indicator_none}`;
     }
   };
@@ -83,7 +83,7 @@ export function RegistrationForm(): React.ReactElement {
   return (
     <main className={styles.main_block}>
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>Register</h2>
+        <h2 className={styles.title}>Register(Controlled Form)</h2>
         <form
           className={styles.form}
           onSubmit={handleSubmit(onSubmit)}
@@ -92,17 +92,29 @@ export function RegistrationForm(): React.ReactElement {
           <div className={styles.container}>
             <label className={styles.input_block}>
               Name:
-              <input {...register('name')} type={'text'} />
+              <input
+                className={styles.input}
+                {...register('name')}
+                type={'text'}
+              />
               <p className={styles.error}>{errors.name?.message}</p>
             </label>
             <label className={styles.input_block}>
               Age:
-              <input {...register('age')} type={'text'} />
+              <input
+                className={styles.input}
+                {...register('age')}
+                type={'text'}
+              />
               <p className={styles.error}>{errors.age?.message}</p>
             </label>
             <label className={styles.input_block}>
               Email:
-              <input {...register('email')} type={'email'} />
+              <input
+                className={styles.input}
+                {...register('email')}
+                type={'email'}
+              />
               <p className={styles.error}>{errors.email?.message}</p>
             </label>
             <PasswordInput
@@ -118,12 +130,16 @@ export function RegistrationForm(): React.ReactElement {
             </div>
             <label className={styles.input_block}>
               Confirm password:
-              <input {...register('confirmPassword')} type={'password'} />
+              <input
+                className={styles.input}
+                {...register('confirmPassword')}
+                type={'password'}
+              />
               <p className={styles.error}>{errors.confirmPassword?.message}</p>
             </label>
             <label className={styles.input_block}>
               Gender:
-              <select {...register('gender')}>
+              <select className={styles.input} {...register('gender')}>
                 <option>Male</option>
                 <option>Female</option>
               </select>
@@ -131,6 +147,7 @@ export function RegistrationForm(): React.ReactElement {
             <label className={styles.input_block}>
               Country:
               <input
+                className={styles.input}
                 {...register('country')}
                 list="country"
                 type={'text'}
@@ -143,8 +160,7 @@ export function RegistrationForm(): React.ReactElement {
               <p className={styles.error}>{errors.country?.message}</p>
             </label>
             <label className={styles.input_block}>
-              Image:
-              <span className={styles.button}>Док</span>
+              <span className={styles.button}>Download image</span>
               <input
                 className={styles.file_input}
                 {...register('image')}
@@ -153,7 +169,7 @@ export function RegistrationForm(): React.ReactElement {
               />
               <p className={styles.error}>{errors.image?.message}</p>
             </label>
-            <label className={styles.input_block}>
+            <label className={styles.input_block_checkbox}>
               <input {...register('ts')} type="checkbox" />I agree to the terms
               & conditions
               <p className={styles.error}>{errors.ts?.message}</p>

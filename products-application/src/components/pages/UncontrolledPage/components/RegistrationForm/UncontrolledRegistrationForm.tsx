@@ -86,7 +86,7 @@ export function RegistrationForm(): React.ReactElement {
     if (errors.password && errors.password.length === 0) {
       return `${styles.indicator} ${styles.green}`;
     }
-    if (!errors.password) {
+    if (errors.password) {
       return `${styles.indicator_none}`;
     }
   };
@@ -99,48 +99,59 @@ export function RegistrationForm(): React.ReactElement {
           <div className={styles.container}>
             <label className={styles.input_block}>
               Name:
-              <input ref={nameRef} type={'text'} />
-              {errors.name.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              <input className={styles.input} ref={nameRef} type={'text'} />
+              {errors.name && (
+                <div className={styles.errors_block}>
+                  {errors.name.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
             <label className={styles.input_block}>
               Age:
-              <input ref={ageRef} type={'text'} />
-              {errors.age.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              <input className={styles.input} ref={ageRef} type={'text'} />
+              {errors.age && (
+                <div className={styles.errors_block}>
+                  {errors.age.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
             <label className={styles.input_block}>
               Email:
-              <input ref={emailRef} type={'email'} />
-              {errors.email.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              <input className={styles.input} ref={emailRef} type={'email'} />
+              {errors.email && (
+                <div className={styles.errors_block}>
+                  {errors.email.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
             <label className={styles.input_block}>
               Password:
-              <input ref={passwordRef} type={'password'} />
-              {errors.password &&
-                errors.password.map((el, ndx) => {
-                  return (
-                    <p className={styles.error} key={ndx}>
-                      {el}
+              <input
+                className={styles.input}
+                ref={passwordRef}
+                type={'password'}
+              />
+              {errors.password && (
+                <div className={styles.errors_block}>
+                  {errors.password.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
                     </p>
-                  );
-                })}
+                  ))}
+                </div>
+              )}
             </label>
             <div className={indicatorClassName()}>
               <div className={styles.inner_indicator} />
@@ -150,65 +161,85 @@ export function RegistrationForm(): React.ReactElement {
             </div>
             <label className={styles.input_block}>
               Confirm password:
-              <input ref={confirmPasswordRef} type={'password'} />
-              {errors.confirmPassword.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              <input
+                className={styles.input}
+                ref={confirmPasswordRef}
+                type={'password'}
+              />
+              {errors.confirmPassword && (
+                <div className={styles.errors_block}>
+                  {errors.confirmPassword.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
             <label className={styles.input_block}>
               Gender:
-              <select ref={genderRef}>
+              <select className={styles.input} ref={genderRef}>
                 <option>Male</option>
                 <option>Female</option>
               </select>
             </label>
             <label className={styles.input_block}>
               Country:
-              <input ref={countryRef} list="country" type={'text'}></input>
+              <input
+                className={styles.input}
+                ref={countryRef}
+                list="country"
+                type={'text'}
+              ></input>
               <datalist id="country">
                 {countries.map((country, ndx) => (
                   <option value={country} key={ndx} />
                 ))}
               </datalist>
-              {errors.country.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              {errors.country && (
+                <div className={styles.errors_block}>
+                  {errors.country.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
             <label className={styles.input_block}>
-              Image:
-              <span className={styles.button}>Док</span>
+              <span className={styles.button}>Download image</span>
               <input
                 ref={imageRef}
                 className={styles.file_input}
                 type={'file'}
                 accept="image/*"
               />
-              {errors.image.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              {errors.image && (
+                <div className={styles.errors_block}>
+                  {errors.image.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
             <label className={styles.input_block}>
-              <input ref={tsRef} type="checkbox" />I agree to the terms &
-              conditions
-              {errors.ts.map((el, ndx) => {
-                return (
-                  <p className={styles.error} key={ndx}>
-                    {el}
-                  </p>
-                );
-              })}
+              <input
+                className={styles.file_input}
+                ref={tsRef}
+                type="checkbox"
+              />
+              I agree to the terms & conditions
+              {errors.ts && (
+                <div className={styles.errors_block}>
+                  {errors.ts.map((e, idx) => (
+                    <p className={styles.error} key={idx}>
+                      {e}
+                    </p>
+                  ))}
+                </div>
+              )}
             </label>
           </div>
           <button className={styles.submit_button} type="submit">

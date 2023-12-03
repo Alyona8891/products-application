@@ -49,10 +49,10 @@ export const passwordSchema = yup.object().shape({
   password: yup
     .string()
     .required()
-    .matches(RegExp('(.*[a-z].*)'), 'Lowercase')
-    .matches(RegExp('(.*[A-Z].*)'), 'Uppercase')
+    .matches(RegExp('(.*[a-z].*)'), 'Lowercase letter')
+    .matches(RegExp('(.*[A-Z].*)'), 'Uppercase letter')
     .matches(RegExp('(.*\\d.*)'), 'Number')
-    .matches(RegExp('[!@#$%^&*(),.?":{}|<>]'), 'Special'),
+    .matches(RegExp('[!@#$%^&*(),.?":{}|<>]'), 'Special symbol'),
 });
 
 export const insertSchema = schema.concat(passwordSchema);

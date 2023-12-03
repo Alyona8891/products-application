@@ -52,3 +52,18 @@
     width: 150px;
     height: 150px;
 }
+
+.message {
+    position: absolute;
+    top: 45vh;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: monospace;
+    width: 90%;
+    margin: 0 auto;
+    background-color: inherit;
+}

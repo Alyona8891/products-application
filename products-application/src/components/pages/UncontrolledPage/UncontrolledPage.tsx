@@ -1,21 +1,11 @@
-import { Link } from 'react-router-dom';
-import styles from './UncontrolledPage.module.scss';
 import { RegistrationForm } from './components/RegistrationForm/UncontrolledRegistrationForm';
+import { Header } from '../../UI/Header/Header';
 
 export function UncontrolledPage(): React.ReactElement {
   return (
     <>
-      <header className={styles.header}>
-        <nav>
-          <Link to="/main">Main Page</Link>
-          <Link to="/controlled">Controlled Form</Link>
-        </nav>
-      </header>
-      <main className={styles.main}>
-        <div className={styles.container}>
-          <RegistrationForm />
-        </div>
-      </main>
+      <Header />
+      <RegistrationForm />
       <footer />
     </>
   );

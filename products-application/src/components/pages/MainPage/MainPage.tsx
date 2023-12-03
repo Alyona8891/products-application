@@ -2,18 +2,13 @@ import { useSelector } from 'react-redux';
 import { UserCard } from '../../UI/UserCard/UserCard';
 import styles from './MainPage.module.scss';
 import { RootState } from '../../store/store';
-import { Link } from 'react-router-dom';
+import { Header } from '../../UI/Header/Header';
 
 export function MainPage(): React.ReactElement {
   const users = useSelector((state: RootState) => state.users.users);
   return (
     <>
-      <header className={styles.header}>
-        <nav>
-          <Link to="/uncontrolled">Uncontrolled Form</Link>
-          <Link to="/controlled">Controlled Form</Link>
-        </nav>
-      </header>
+      <Header />
       <main className={styles.main}>
         <div className={styles.container}>
           {users.length > 1 ? (
@@ -21,7 +16,10 @@ export function MainPage(): React.ReactElement {
               return <UserCard styles={styles} user={user} key={ndx} />;
             })
           ) : (
-            <h2>gooo</h2>
+            <h2 className={styles.message}>
+              There is no information available. Please, fill out any of the
+              suggested forms
+            </h2>
           )}
         </div>
       </main>
