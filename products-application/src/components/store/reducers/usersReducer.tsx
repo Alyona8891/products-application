@@ -1,16 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IState, IUser } from '../../../types/types';
+import { IState, IUserState } from '../../../types/types';
 
 export const initialState: IState = {
   users: [
     {
-      id: 1,
-      name: 'Alena',
-      age: 35,
-      email: 'besssta888@mail.ru',
-      password: '12345678',
-      gender: 'female',
-      country: 'belarus',
+      name: '',
+      age: '',
+      email: '',
+      password: '',
+      gender: '',
+      country: '',
+      image: '',
     },
   ],
   countries: [
@@ -218,7 +218,7 @@ export const usersSlice = createSlice({
   name: 'usersData',
   initialState,
   reducers: {
-    setUsers: (state, action: PayloadAction<IUser>) => {
+    setUsers: (state, action: PayloadAction<IUserState>) => {
       state.users.push(action.payload);
     },
   },
