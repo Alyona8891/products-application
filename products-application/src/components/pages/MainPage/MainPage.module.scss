@@ -25,10 +25,17 @@
         transition: 0.3s;
     }
     &:last-child {
-        background-color: chocolate;
+        animation: blink 1s 6;
+        border: 2px solid red;
     }
     
 }
+
+@keyframes blink {
+    50% {
+      border-color:white;
+    }
+  }
 
 .block {
     margin: 0 5px 10px 0;

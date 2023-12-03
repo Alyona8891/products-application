@@ -224,13 +224,9 @@ export function RegistrationForm(): React.ReactElement {
                 </div>
               )}
             </label>
-            <label className={styles.input_block}>
-              <input
-                className={styles.file_input}
-                ref={tsRef}
-                type="checkbox"
-              />
-              I agree to the terms & conditions
+            <label className={styles.input_block_checkbox}>
+              <input ref={tsRef} type="checkbox" />I agree to the terms &
+              conditions
               {errors.ts && (
                 <div className={styles.errors_block}>
                   {errors.ts.map((e, idx) => (
